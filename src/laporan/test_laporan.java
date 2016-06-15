@@ -7,12 +7,18 @@
 package laporan;
 
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
-import smpis_sistem.dbconnection;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+import smpis_system.dbconnection;
 
 /**
  *
@@ -73,26 +79,14 @@ public class test_laporan extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        /*
+        
 		try
         {
-            reportSource = "\"C:\\\\Vandens\\\\jars\\\\Cherry_Table_Based.jasper\"";
-            JasperReport jasperReport = JasperCompileManager.compileReport("C:/Vandens/jars/Cherry_Table_Based.jrxml"); //new File("").getAbsolutePath()+"src/com/ztscorp/lms/reports/HibernateQueryDemoReport.jrxml");
-       //     JasperReport jasperReport =
-       //         JasperCompileManager.compileReport(reportSource);
-            
-            // Make the driver class available.
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            // Create a connection to pass into the report.
-            java.sql.Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/db_sekolah", "root", "vandens");
-            
-            // Replace the empty JR datasource parameter with
-            // the connection parameter named conn.
+            JasperReport jasperReport = JasperCompileManager.compileReport("src\\laporan\\laporan_test.jrxml"); //new File("").getAbsolutePath()+"src/com/ztscorp/lms/reports/HibernateQueryDemoReport.jrxml");
+ 
             JasperPrint jasperPrint =
                 JasperFillManager.fillReport(
-                jasperReport, params, conn);
+                jasperReport, params, dbconnect);
             
             JasperExportManager.exportReportToHtmlFile(
                 jasperPrint, "C:\\Vandens\\jars\\Cherry_Table_Based.jasper");
@@ -100,11 +94,11 @@ public class test_laporan extends javax.swing.JFrame {
             JasperViewer.viewReport(jasperPrint);
         }
         
-        catch (JRException | ClassNotFoundException | SQLException e)
+        catch (JRException e)
         {
             e.printStackTrace();
         }
-        */
+        
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
