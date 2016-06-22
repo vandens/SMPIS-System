@@ -1,0 +1,411 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH GAMMU\-SMSDRC 5 "Leden  4, 2009" "Gammu 1.23.0" "Dokumentace Gammu"
+.SH JMÉNO
+
+.P
+gammu\-smsdrc \- konfigurační soubor pro gammu\-smsd(1)
+
+.SH SYNTAXE
+\fI/etc/gammu\-smsdrc\fP
+.SH POPIS
+gammu\-smsd(1) čte konfiguraci z konfiguračního souboru. Jeho umístění může
+být zadáno na příkazové řádce, jinak se použije /etc/gammu\-smsdrc.
+
+Tento soubor používá syntaxi ini souborů, komentáře mohou být značeny buď ;
+nebo #. Sekce souboru jsou zapsány v hranatých závorkách jako [toto].Všechny
+hodnoty klíčů nerozlišují velikost písmen.
+
+Konfigurační soubor pro gammu\-smsd se skládá alespoň ze dvou sekcí \- [gammu]
+a [smsd].
+
+Sekce [gammu] je konfigurací připojení k telefonu a je stejná jako je
+popsáno v gammurc(5) s jedinou vyjímkou a to ignorování direktivy logfile,
+protože logování je prováděno přes SMS démona. Nicméně direktiva logformat
+stále určuje jak moc ladicích hlášek bude gammu předávat.
+
+Sekce [smsd] nastavuje SMS démona a je popsána v následující části
+textu. Nejdříve jsou popsány obecné parametry SMS démona a pak parametry pro
+jednotlivé služby.
+
+Dále jsou volitelné sekce [include_numbers] a [exclude_numbers], které
+ovládají filtrování zpráv (viz dále).
+
+.SS "Obecné parametry SMS démona"
+
+.TP 
+\fBService\fP
+
+Jakou službu SMSM použít, jedna z FILES, MYSQL, PGSQL, DBI (záleží na
+zakompilovaných knihovnách).
+
+\fBFILES\fP \- stores messages in files, see gammu\-smsd\-files(7) for details
+.br
+\fBMYSQL\fP \- stores messages in MySQL database, see gammu\-smsd\-mysql(7) for
+details
+.br
+\fBPGSQL\fP \- stores messages in PostgreSQL database, see gammu\-smsd\-pgsql(7)
+for details
+.br
+\fBDBI\fP \- stores messages in any database supported by libdbi, this includes
+MSSQL, MySQL, PostgreSQL or SQLite databases, see gammu\-smsd\-dbi(7) for
+details
+
+.TP 
+\fBPIN\fP
+
+PIN pro SIM kartu. Tento parametr je volitelný, ale měl by být zadán, pokud
+telefon po restartu vyžaduje PIN.
+
+.TP 
+\fBNetworkCode\fP
+
+Heslo nastavení sítě. Tento parametr je volitelný, ale měl by být zadán,
+pokud ho telefon po zapnutí vyžaduje.
+
+.TP 
+\fBPhoneCode\fP
+
+Heslo zámku telefonu. Tento parametr je volitelný, ale měl by být zadán,
+pokud ho telefon po zapnutí vyžaduje.
+
+.TP 
+\fBLogFile\fP
+
+Soubor, kde budou zaznamenány informace o akcích prováděných SMSD. Můžete
+také použít speciální hodnotu "syslog", která zapne logování prostřednictvím
+syslog démona. Na Windows je možné použít jinou speciální hodnotu
+"eventlog", při které budou záznamy posílány do Logu Událostí ve Windows.
+
+Výchozí stav je vypnuté logování.
+
+.TP 
+\fBDebugLevel\fP
+
+Ladicí úroveň SMSD. Číslo je součtem všech hodnot, které chcete logovat.
+
+\fB1\fP \- základní ladicí informace
+.br
+\fB2\fP \- logování SQL dotazů
+.br
+\fB4\fP \- logování ladicích informací gammu (tyto musí být také povoleny v
+sekci gammu)
+
+Pro maximální množství ladicích informací nastavte 255.
+
+Výchozí je 0, což znamená žádné ladicí informace.
+
+.TP 
+\fBCommTimeout\fP
+
+Kolik sekund by měl SMSD čekat po každém cyklu čtení/zápis.
+
+Výchozí je 30.
+
+.TP 
+\fBSendTimeout\fP
+
+Určuje kolik sekund má SMSD čekat na odpověď sítě během odesílání
+zprávy. Pokud se během té doby nic nestane, zpráva bude odeslána znovu.
+
+Výchozí je 30.
+
+.TP 
+\fBMaxRetries\fP
+
+Kolikrát se bude SMSD pokoušet znovu odeslat zprávu pokud se to na první
+pokus nepodaří.
+
+Výchozí je 1.
+
+.TP 
+\fBReceiveFrequency\fP
+
+Počet sekund mezi zjišťováním, zda jsou nějaké nově přijaté SMS zprávy,
+pokud je telefon zaměstnán odesíláním zpráv. Obvykle se nové zprávy hledají
+každých CommTimeout sekund a po každé odeslané SMS.
+
+Výchozí je 0 (není použito).
+
+.TP 
+\fBCheckSecurity\fP
+
+Jestli se má kontrolovat, zda telefon vyžaduje PIN.
+
+Výchozí je 1 (povoleno).
+
+.TP 
+\fBResetFrequency\fP
+
+Počet sekund mezi provádění preventivního resetu telefonu. Tato volba může
+zabránit zatuhnutí některý telefonů (například Nokia 5110), které při delším
+použivání přestanou reagovat a jen vyndání baterie je může oživit.
+
+Výchozí je 0 (není použito).
+
+.TP 
+\fBDeliveryReport\fP
+
+Jak mají být používány doručenky, jedna z možností 'no', 'log', 'sms'.
+
+\fBlog\fP \- logovat informace o doručenkách,
+.br
+\fBsms\fP \- ukládat doručenky jako příchozí SMS.
+.br
+\fBno\fP \- nevyžadovat doručenky
+
+Výchozí je 'no'.
+
+.TP 
+\fBDeliveryReportDelay\fP
+
+Prodleva v sekundách, jak dlouho je doručenka považována za platnou. Tento
+parametr závisí na chybách v použité síti (doručenka by měla obsahovat
+stejný čas jako odeslaná zpráva). Zvyšte tuto hodnotu pokud se Gammu nedaří
+spárovat doručenky s odeslanými zprávami.
+                      
+Výchozí je 600 (10 minut).
+
+.TP 
+\fBPhoneID\fP
+
+Text s informací o telefou, použité při odesílání a přijímání. Tato volba
+může být užitečná, pokud chcete provozovat více SMS démonů.
+
+Pokud nastavíte PhoneID, všechny zprávy (včetně těch vložených pomocí
+gammu\-smsd\-inject) budou označeny tímto textem a tím bude umožněno více
+démonům sdílet jednu databázi. Tento parametr nemá žádný vliv na službu
+ukládání zpráv do souborů (FILES).
+
+.TP 
+\fBRunOnReceive\fP
+
+Executes a program after receiving message. This parameter is executed
+through shell, so you might need to escape some special characters and you
+can include any number of parameters. Additionally parameters with
+identifiers of received messages are appended to the command line. The
+identifiers depend on used service backend, typically it is ID of inserted
+row for database backends or file name for file based backends.
+
+.SS "Parametry pro služby používající databázi"
+
+Všechny ze služeb DBI, MYSQL a PGSQL (viz gammu\-smsd\-mysql(7),
+gammu\-smsd\-pgsql(7), gammu\-smsd\-dbi(7)) podporují stejné parametry pro
+nastavení připojení k databázi:
+
+.TP 
+\fBUser\fP
+
+Uživatelské jméno pro připojení k databázi.
+
+.TP 
+\fBPassword\fP
+
+Heslo použité pro připojení k databázi.
+
+.TP 
+\fBPC\fP
+
+Adresa databázového serveru. Za dvojtečkou může být také zadán port nebo
+cesta k socketu, například localhost:/path/to/socket.
+
+.TP 
+\fBDatabase\fP
+
+Jméno databáze, která se má použít. Před spuštěním gammu\-smsd musí být
+vytvořeny všechny potřebné tabulky. Pro tento účel můžete použít SQL souboru
+obsažené v dokumentaci.
+
+.TP 
+\fBSkipSMSCNumber\fP
+
+Pokud odešlete SMS zprávu přes nějaké SMS centrum, může se stát, že
+doručenky přijdou z jiného SMS centra. Pro tento případ použijte tento
+parametr a nastavte zde takovéto SMS centrum. Gammu pak nebude kontrolovat
+číslo tohoto SMS centra při přiřazování doručenek zprávám.
+
+.TP 
+\fBDriver\fP
+
+Který ovladač DBI se má použít. Možnosti závisí na tom, které máte
+nainstalovány. DBI podporuje: mysql, freetds (umožňuje přístup k MS SQL
+Serveru a Sybase), pgsql, sqlite, sqlite3, firebird a ovladače ingres, msql
+a oracle se vyvíjejí.
+
+.TP 
+\fBDriversPath\fP
+
+Cesta, kde jsou umístěny ovladače DBI. Tento parametr obvykle není potřeba
+nastavovat, pokud jsou ovladače nainstalovány správně.
+
+.TP 
+\fBDBDir\fP
+
+Adresář, kde je uložena databáze pro některé (v současné době pouze sqlite)
+ovladače DBI. Nastavte zde cestu. kde je uložen soubor se sqlite databází.
+
+.SS "Parametry pro službu používající soubory"
+
+Služba FILES používá následující konfigurační volby. Podrobnější popis této
+služby je v gammu\-smsd\-files(7). Prosím ujistěte se, že  všechny cestky
+končí oddělovačem cest (na Unixových systémech /):
+
+.TP 
+\fBInboxPath\fP
+
+Kde jsou ukládány přijaté zprávy.
+
+Výchozí je aktuální adresář.
+
+.TP 
+\fBOutboxPath\fP
+
+Kde jsou umístěny zprávy ve frontě k odeslání.
+
+Výchozí je aktuální adresář.
+
+.TP 
+\fBSentSMSPath\fP
+
+Kde jsou ukládány přenesené zprávy. Pokud je cesta stejná jako OutBoxPath,
+zprávyjsou vymazány.
+
+Výchozí je mazat přenesené zprávy.
+
+.TP 
+\fBErrorSMSPath\fP
+
+Kde jsou umístěny SMS po chybě při odesílání.
+
+Výchozí je stejné jako SentSMSPath.
+
+.TP 
+\fBInboxFormat\fP
+
+Formát ukládání SMS: 'detail', 'unicode', 'standard'.
+
+\fBdetail\fP \- formát používaný gammu(1) pro zálohy zpráv
+.br
+\fBunicode\fP \- text zprávy uložený v unicode (UTF\-16)
+.br
+\fBstandard\fP \- text zprávy uložený v systémovém kódování
+
+Výchozí je 'unicode'.
+
+.TP 
+\fBTransmitFormat\fP
+
+Formát přenosu SMS: 'auto', 'unicode', '7bit'.
+
+Výchozí je 'auto'.
+
+
+.SS "Filtrování zpráv"
+
+SMSD umožňuje zpracovat jen část přijatých zpráv. Filtry můžete definovat v
+sekcích [include_numbers] a [exclude_numbers]. Pokud existuje sekce
+[include_numbers], všechny hodnoty z ní (klíče jsou ignorovány) jsou použity
+jako povolená čísla a jiné zprávy nejsou zpracovány. Naopak v
+[exclude_numbers] můžete zadat jaká čísla chcete ignorovat.
+
+.SH PŘÍKLAD
+
+Kompletnější ukázka je dostupná v dokumentaci Gammu. Pro jednoduchost
+následující příklady neobsahují sekci [gammu], na její příkladu se můžete
+podívat do gammurc(5).
+
+Konfigurační soubor pro SMSD používající službu FILES by mohl vypadat takto:
+
+.RS
+.sp
+.nf
+.ne 7
+[smsd]
+Service = files
+PIN = 1234
+LogFile = syslog
+InboxPath = /var/spool/sms/inbox/
+OutboPpath = /var/spool/sms/outbox/
+SentSMSPath = /var/spool/sms/sent/
+ErrorSMSPath = /var/spool/sms/error/
+.fi
+.sp
+.RE
+.PP
+
+Pokud chcete použít službu MYSQL, bute potřebovat přibližně toto:
+
+.RS
+.sp
+.nf
+.ne 7
+[smsd]
+Service = mysql
+PIN = 1234
+LogFile = syslog
+User = smsd
+Password = smsd
+PC = localhost
+Database = smsd
+.fi
+.sp
+.RE
+.PP
+
+Zpracovávat jen zprávy od čísla 123456:
+
+.RS
+.sp
+.nf
+.ne 7
+[include_numbers]
+number1 = 123456
+.fi
+.sp
+.RE
+.PP
+
+Nezpracovávat zprávy od ďábelského čísla 666:
+
+.RS
+.sp
+.nf
+.ne 7
+[exclude_numbers]
+number1 = 666
+.fi
+.sp
+.RE
+.PP
+
+
+.SH "DALŠÍ INFORMACE"
+gammu\-smsd(1), gammu(1), gammurc(5)
+
+gammu\-smsd\-files(7), gammu\-smsd\-mysql(7), gammu\-smsd\-pgsql(7),
+gammu\-smsd\-dbi(7), gammu\-smsd\-tables(7)
+.SH AUTOR
+gammu\-smsd a tuto manuálovou stránku napsal Michal Čihař
+<michal@cihar.com>.
+.SH COPYRIGHT
+Copyright \(co 2009 Michal Čihař a další autoři.  Licence GPLv2: GNU GPL
+verze 2 <http://www.gnu.org/licenses/old\-licenses/gpl\-2.0.html>
+.br
+Tento program je volný software; můžete jej šířit a modifikovat.  Není
+poskytována ŽÁDNÁ ZÁRUKA, v rozsahu jaký je povolen zákonem.
+.SH "HLÁŠENÍ CHYB"
+Prosím hlašte chyby na <http://bugs.cihar.com>.
+
+Před hlášením chyb prosím zapněte logovaní v nastavení SMSD:
+
+    [gammu]
+    logformat = textall
+
+    [smsd]
+    debuglevel = 255
+    logfile = smsd.log
+
+a přiložte tento log k hlášení chyby.

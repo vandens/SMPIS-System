@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -35,7 +35,7 @@ public class student_list_form extends javax.swing.JInternalFrame {
     public String sql;
     private String where = "";
     public String key;
-    private Map<String, Object> params;
+    public Map<String, Object> params;
     /**
      * Creates new form student_list_form
      */
@@ -282,7 +282,7 @@ public class student_list_form extends javax.swing.JInternalFrame {
                         .addComponent(delete)
                         .addComponent(print)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -405,16 +405,41 @@ public class student_list_form extends javax.swing.JInternalFrame {
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
         // TODO add your handling code here:
         try
-        {
+        {   
+            
+            String id                   = param1.getText();
+            String name                 = param2.getText();
+            String clas                 = param3.getText();
+            String sex_l                = param4.getText();
+            String sex_p                = param5.getText();
+            String status               = (String) param6.getSelectedItem();
+
+            boolean L_isSelected = param4.isSelected();
+            boolean P_isSelected = param5.isSelected();
+
+            where = "WHERE 1=1 ";
+            if(!id.equals(""))                                      where = where+" AND student_id          = '"+id+"'";
+            if(!name.equals(""))                                    where = where+" AND student_fullname    LIKE '%"+name+"%'";
+            if(!clas.equals(""))                                    where = where+" AND class_name          = '"+clas+"'";
+            if(L_isSelected && !P_isSelected)                       where = where+" AND student_sex         = 'L'";
+            if(P_isSelected && !L_isSelected)                       where = where+" AND student_sex         = 'P'";
+            if(!status.equals("") && !status.equals("Pilih satu"))  where = where+" AND student_status      = '"+status+"'";
+
+            String Query     = "SELECT CONCAT(student_bplace,', ',DATE_FORMAT(student_bday,'%d %b %Y')) as student_bplace, a.*  FROM m_student a "+where;
+            System.out.println(Query);
+            Map params=new HashMap();
+            params.put("QueryString",Query);
+
             JasperReport jasperReport = JasperCompileManager.compileReport(new File("").getAbsolutePath()+"\\src\\laporan\\student_report_list.jrxml"); //new File("").getAbsolutePath()+"src/com/ztscorp/lms/reports/HibernateQueryDemoReport.jrxml");
             JasperPrint jasperPrint =
                 JasperFillManager.fillReport(
                 jasperReport, params, dbconnect);
             
-            JasperExportManager.exportReportToHtmlFile(
-                jasperPrint, new File("").getAbsolutePath()+"\\src\\laporan\\student_report_list.jrxml");
+            //JasperExportManager.exportReportToHtmlFile(
+            //    jasperPrint, new File("").getAbsolutePath()+"\\src\\laporan\\student_report_list_htm"+".html");
             
-            JasperViewer.viewReport(jasperPrint);
+            JasperViewer.viewReport(jasperPrint, false);
+            
         }
         catch (JRException e)
         {

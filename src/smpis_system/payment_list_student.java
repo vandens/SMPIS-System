@@ -6,18 +6,31 @@
 
 package smpis_system;
 
+import java.awt.Window;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author vandens
  */
-public class payment_list_student extends javax.swing.JDialog {
+public class payment_list_student extends javax.swing.JPanel {
+    public Connection dbconnect = dbconnection.getConnection();
     private String where = "";
+    private DefaultTableModel table_list;
+    public String sql;
+    public String key;
     /**
-     * Creates new form payment_list_student
+     * Creates new form payment_list_students
      */
     public payment_list_student() {
         initComponents();
-        setModal(true);
+        show_list(where);
     }
 
     /**
@@ -32,12 +45,10 @@ public class payment_list_student extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        param1 = new javax.swing.JTextField();
-        param2 = new javax.swing.JTextField();
+        param4 = new javax.swing.JTextField();
+        param5 = new javax.swing.JTextField();
         filter = new javax.swing.JButton();
         clear = new javax.swing.JButton();
-        param3 = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_list_student = new javax.swing.JTable();
 
@@ -46,8 +57,6 @@ public class payment_list_student extends javax.swing.JDialog {
         jLabel1.setText("NIS");
 
         jLabel2.setText("Nama Siswa");
-
-        jLabel3.setText("Kelas");
 
         filter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/filter_add.png"))); // NOI18N
         filter.setText("Filter");
@@ -67,31 +76,28 @@ public class payment_list_student extends javax.swing.JDialog {
             }
         });
 
-        param3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10", "11", "12" }));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(88, 88, 88)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(339, 339, 339)
+                            .addComponent(param5, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(127, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,29 +105,21 @@ public class payment_list_student extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(param5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filter)
                     .addComponent(clear))
-                .addGap(64, 64, 64))
+                .addGap(87, 87, 87))
         );
 
         table_list_student.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "NIS", "Nama Lengkap Siswa", "Kelas", "Tempat Lahir", "Tanggal Lahir", "Jenis Kelamin", "Alamat", "Status"
@@ -142,10 +140,21 @@ public class payment_list_student extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        table_list_student.setShowVerticalLines(false);
+        table_list_student.setUpdateSelectionOnSort(false);
+        table_list_student.setVerifyInputWhenFocusTarget(false);
+        table_list_student.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_list_studentMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(table_list_student);
+        if (table_list_student.getColumnModel().getColumnCount() > 0) {
+            table_list_student.getColumnModel().getColumn(1).setMinWidth(250);
+        }
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -154,45 +163,49 @@ public class payment_list_student extends javax.swing.JDialog {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 318, Short.MAX_VALUE)))
+                        .addGap(0, 195, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterActionPerformed
         // TODO add your handling code here:
 
-        String id                   = param1.getText();
-        String name                 = param2.getText();
-        String clas                 = (String) param3.getSelectedItem();
+        String id                   = param4.getText();
+        String name                 = param5.getText();
 
-
-        where = "WHERE 1=1 ";
-        if(!id.equals(""))                                      where = where+" AND student_id          = '"+id+"'";
+        where = "WHERE student_status NOT IN ('Dihapus','Suspen') ";
+        if(!id.equals(""))                                      where = where+" AND student_id          LIKE '%"+id+"%'";
         if(!name.equals(""))                                    where = where+" AND student_fullname    LIKE '%"+name+"%'";
-        if(!clas.equals(""))                                    where = where+" AND class_name          = '"+clas+"'";
 
         show_list(where);
     }//GEN-LAST:event_filterActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
-        param1.setText("");
-        param2.setText("");
-        param3.getSelectedItem();
+        param4.setText("");
+        param5.setText("");
         show_list(where);
     }//GEN-LAST:event_clearActionPerformed
+
+    private void table_list_studentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_list_studentMouseClicked
+        // TODO add your handling code here:
+        //key = get_NIS();
+        // JOptionPane.showMessageDialog(rootPane,"NIS : "+setNIS());
+        Window win = SwingUtilities.getWindowAncestor(this);
+        if (win != null) {
+            win.dispose();
+        }
+    }//GEN-LAST:event_table_list_studentMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -200,16 +213,52 @@ public class payment_list_student extends javax.swing.JDialog {
     private javax.swing.JButton filter;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField param1;
-    private javax.swing.JTextField param2;
-    private javax.swing.JComboBox param3;
+    private javax.swing.JTextField param4;
+    private javax.swing.JTextField param5;
     private javax.swing.JTable table_list_student;
     // End of variables declaration//GEN-END:variables
 
-    private void show_list(String where) {
-        
+    private void show_list(String str_where) {
+            Object [] rows={"NIS","Nama Lengkap ","Kelas","Tempat Lahir","Tanggal Lahir","JK","Status"};
+            table_list=new DefaultTableModel(null,rows);
+            table_list_student.setModel(table_list);
+            table_list_student.getColumnModel().getColumn(1).setPreferredWidth(220);
+            table_list_student.setBorder(null);
+            jScrollPane1.setVisible(true);
+            jScrollPane1.setViewportView(table_list_student);
+            
+            try{
+                
+                //String sql="select * from m_student";
+                 if(!str_where.equals("")){
+                     sql  = "SELECT * FROM m_student "+str_where;
+                 }else{
+                     sql  = "SELECT * FROM m_student WHERE student_status NOT IN ('Dihapus','Suspen') ";
+                 }
+                 
+                Statement st = dbconnect.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while(rs.next()){
+                    String student_id          = rs.getString("student_id");
+                    String student_fullname    = rs.getString("student_fullname");
+                    String class_name          = rs.getString("class_name");
+                    String student_bplace      = rs.getString("student_bplace");
+                    String student_bday        = rs.getString("student_bday");
+                    String student_sex         = rs.getString("student_sex");
+                    String student_status      = rs.getString("student_status");
+
+                    String [] tampil={student_id,student_fullname,class_name,student_bplace,student_bday,student_sex,student_status};
+                    table_list.addRow(tampil);
+                }
+            }catch(SQLException e){
+                JOptionPane.showMessageDialog(null,"Terdapat kesalahan query : "+e);
+            }
+    }
+
+    String get_NIS() {
+        key = (String) table_list_student.getValueAt(table_list_student.getSelectedRow(),0);
+        return key;
     }
 }

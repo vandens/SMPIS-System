@@ -6,16 +6,26 @@
 
 package smpis_system;
 
-import java.awt.Component;
-import java.beans.PropertyVetoException;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import laporan.test_laporan;
+import javax.swing.Timer;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -23,6 +33,7 @@ import laporan.test_laporan;
  */
 public class mainform extends javax.swing.JFrame {
     public static String user_id = "admin";
+    public Connection dbconnect = dbconnection.getConnection();
     /**
      * Creates new form mainform
      * @param user_id
@@ -30,7 +41,9 @@ public class mainform extends javax.swing.JFrame {
     public mainform(String user_id) {
         initComponents();
         check_privilege(user_id);  
+        btn_user_id.setText(" : "+user_id);
         Date date = new java.util.Date();
+        System.out.println(user_id);
     }
 
 
@@ -66,7 +79,6 @@ public class mainform extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         debt_report_list = new javax.swing.JMenuItem();
         payment_report_list = new javax.swing.JMenuItem();
-        sms_report_list = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
 
@@ -135,32 +147,58 @@ public class mainform extends javax.swing.JFrame {
         });
         toolbar.add(btn_logout);
 
+        tampil_jam.setFont(new java.awt.Font("Arial", 0, 25)); // NOI18N
+        tampil_jam.setText("00:00:00");
+        tampil_jam.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(1133, Short.MAX_VALUE)
+                .addComponent(tampil_jam)
+                .addGap(22, 22, 22))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(toolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(toolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 917, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 336, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 61, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(tampil_jam, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(toolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(toolbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        ActionListener jam = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date dt = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+                String datetime = sdf.format(dt);
+
+                //menampilkan pada layar
+                tampil_jam.setText(datetime);
+            }
+        };
+
+        new Timer(1000, jam).start();
+        tampil_jam.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
         desktopPane.setLayout(desktopPaneLayout);
         desktopPaneLayout.setHorizontalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1253, Short.MAX_VALUE)
         );
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 508, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -171,7 +209,9 @@ public class mainform extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(desktopPane))
         );
 
         jToolBar2.setFloatable(false);
@@ -246,7 +286,12 @@ public class mainform extends javax.swing.JFrame {
 
         sms_list.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.SHIFT_MASK));
         sms_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/email_error.png"))); // NOI18N
-        sms_list.setText("SMS Pending");
+        sms_list.setText("SMS Info");
+        sms_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sms_listActionPerformed(evt);
+            }
+        });
         jMenu2.add(sms_list);
 
         jMenuBar1.add(jMenu2);
@@ -255,15 +300,21 @@ public class mainform extends javax.swing.JFrame {
 
         debt_report_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/chart_bar.png"))); // NOI18N
         debt_report_list.setText("Tunggakan");
+        debt_report_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                debt_report_listActionPerformed(evt);
+            }
+        });
         jMenu3.add(debt_report_list);
 
         payment_report_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/chart_curve.png"))); // NOI18N
         payment_report_list.setText("Transaksi");
+        payment_report_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payment_report_listActionPerformed(evt);
+            }
+        });
         jMenu3.add(payment_report_list);
-
-        sms_report_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/chart_bullseye.png"))); // NOI18N
-        sms_report_list.setText("SMS Terkirim");
-        jMenu3.add(sms_report_list);
 
         jMenuBar1.add(jMenu3);
 
@@ -360,10 +411,34 @@ public class mainform extends javax.swing.JFrame {
 
     private void btn_sms_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sms_listActionPerformed
         // TODO add your handling code here:
-        test_laporan form = new test_laporan();
+        sms_list_form form = new sms_list_form();
         form.setVisible(true);
+        form.setFocusCycleRoot(true);
+        desktopPane.add(form);
         
     }//GEN-LAST:event_btn_sms_listActionPerformed
+
+    private void sms_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sms_listActionPerformed
+        // TODO add your handling code here:
+        sms_list_form form = new sms_list_form();
+        form.setVisible(true);
+        form.setFocusCycleRoot(true);
+        desktopPane.add(form);
+    }//GEN-LAST:event_sms_listActionPerformed
+
+    private void payment_report_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payment_report_listActionPerformed
+        // TODO add your handling code here:
+        payment_report_form form = new payment_report_form();
+        form.setLocationRelativeTo(null);
+        form.setVisible(true);            
+    }//GEN-LAST:event_payment_report_listActionPerformed
+
+    private void debt_report_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debt_report_listActionPerformed
+        // TODO add your handling code here:
+        debt_report_form form = new debt_report_form();
+        form.setLocationRelativeTo(null);
+        form.setVisible(true);
+    }//GEN-LAST:event_debt_report_listActionPerformed
 
     /**
      * @param args the command line arguments
@@ -392,6 +467,8 @@ public class mainform extends javax.swing.JFrame {
         }
         //</editor-fold>
         /* Create and display the form */
+        
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 mainform mdiparent = new mainform(user_id);       
@@ -401,6 +478,7 @@ public class mainform extends javax.swing.JFrame {
                 mdiparent.setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -427,8 +505,8 @@ public class mainform extends javax.swing.JFrame {
     private javax.swing.JMenuItem payment_list;
     private javax.swing.JMenuItem payment_report_list;
     private javax.swing.JMenuItem sms_list;
-    private javax.swing.JMenuItem sms_report_list;
     private javax.swing.JMenuItem student_list;
+    private final javax.swing.JLabel tampil_jam = new javax.swing.JLabel();
     private javax.swing.JToolBar toolbar;
     // End of variables declaration//GEN-END:variables
 

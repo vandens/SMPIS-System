@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payment_reports" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7e320bb6-1c63-442e-9872-4185d4dab25a">
+	<property name="ireport.zoom" value="1.6105100000000019"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="years" class="java.lang.String"/>
+	<parameter name="class_name" class="java.lang.String"/>
+	<parameter name="student_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM list_debt WHERE  student_id = $P{student_id}
+ORDER BY debt_addtime ASC]]>
+	</queryString>
+	<field name="debt_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_description" class="java.lang.String">
+		<fieldDescription><![CDATA[diisi untuk pembayaran SPP /
+
+bulanan / deskripsi]]></fieldDescription>
+	</field>
+	<field name="years" class="java.lang.String">
+		<fieldDescription><![CDATA[tahun ajaran]]></fieldDescription>
+	</field>
+	<field name="student_id" class="java.lang.String">
+		<fieldDescription><![CDATA[Tabel master payment]]></fieldDescription>
+	</field>
+	<field name="class_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="class_name_exist" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_status" class="java.lang.String">
+		<fieldDescription><![CDATA[Belum Lunas, Lunas, Dihapus, Arsip]]></fieldDescription>
+	</field>
+	<field name="debt_order" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_addby" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_addtime" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_updateby" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debt_updatetime" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="student_fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="163" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="75" y="17" width="455" height="33" backcolor="#000000" uuid="85bbf4b3-06fe-44dd-b7a6-39b76d1a016c"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SMA NEGERI 6 KAB. TANGERANG]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="88" y="84" width="138" height="18" uuid="8559a82e-5748-4eb2-bc2a-8a20d48523c2"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Title" x="0" y="141" width="435" height="21" uuid="66f432f0-dfc7-421a-8a8a-f71e7a5204be"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Laporan Tunggakan per Kelas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="-1" y="84" width="90" height="18" forecolor="#000000" uuid="1473d19b-206d-4128-bd77-4239699d10f9"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="-1" y="102" width="90" height="18" forecolor="#000000" uuid="eb5f0b7f-06fd-4f91-a646-7b9b25f69b92"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Siswa]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="162" width="555" height="1" uuid="1a54c6c2-33e3-4d6e-ace0-414f1da506dd"/>
+			</line>
+			<staticText>
+				<reportElement style="SubTitle" x="75" y="50" width="455" height="23" uuid="779940cb-cbdf-4de5-8ffc-eb00777181ca"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jalan Aria Jaya Sentika No. 52 Pasirnangka, Tigaraksa - Tangerang, 15720 - (021) 5990276]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="141" width="555" height="1" uuid="f0590895-e9b3-46ae-9521-620ea5e4c649"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="88" y="102" width="138" height="18" uuid="30f87152-d51e-48c0-a593-399cf4427ec0"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{student_fullname}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="73" width="555" height="1" uuid="5f81961d-a2b0-4929-854b-bb3ef63fceab"/>
+			</line>
+			<image>
+				<reportElement x="12" y="17" width="63" height="46" uuid="1493c0a8-e7db-4564-923d-8d08be461186"/>
+				<imageExpression><![CDATA[new File("").getAbsolutePath()+"/src/laporan/logo-in.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Column header" x="-1" y="120" width="90" height="18" forecolor="#000000" uuid="4ebb923f-aec8-4e6d-8fec-63e374043c9a"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kelas]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="88" y="120" width="138" height="18" uuid="32f13e88-3c1b-4b8e-b535-530091a53ab5"/>
+				<textElement>
+					<font fontName="Arial Narrow" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{class_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="762411db-ae8a-4b62-8d4e-61f2a6df122b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="63" height="15" forecolor="#736343" uuid="2654a83c-d1b7-4188-bae5-dfadd5de9a2c"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Kode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="63" y="0" width="207" height="15" forecolor="#736343" uuid="7c99fc21-0c64-4004-b53a-643171885eb9"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="289" y="0" width="171" height="15" forecolor="#736343" uuid="37757fa0-3b59-44fc-8804-83bd0531de00"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Besar Tunggakan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="460" y="1" width="95" height="15" forecolor="#736343" uuid="689e09c2-b5a6-43f1-8986-85c4683a0d80"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="588e2987-be18-4d09-b5e3-526ca96d6db7"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="0" y="0" width="63" height="15" uuid="9f5e828d-c7dc-4c7e-bfcc-700dac0f7e91"/>
+					<textElement>
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{debt_code}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="334" y="0" width="90" height="15" uuid="095217ff-0ef8-447e-aaf1-f6d6028c5f63"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{debt_amount}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="316" y="0" width="18" height="15" forecolor="#000000" uuid="2561073e-e344-4678-82ca-4b31e2e7884d"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial Narrow" size="9" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Rp]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="63" y="0" width="205" height="15" uuid="0fa589b7-31fc-4ee1-b4d4-306b0cf81050"/>
+					<textElement>
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{debt_description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="460" y="0" width="95" height="15" uuid="4af344f8-d00a-407a-87bc-cbb3d0989012"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{debt_status}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="50"/>
+	</summary>
+</jasperReport>

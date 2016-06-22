@@ -95,14 +95,14 @@ public class debt_add_form extends javax.swing.JDialog {
 
         jLabel5.setText("Kelas");
 
-        param1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "2012/2013", "2013/2014", "2014/2015", "2015/2016", "2016/2017", "2017/2018", "2018/2019", "2019/2020" }));
+        param1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "2015/2016", "2016/2017", "2017/2018", "2018/2019", "2019/2020" }));
         param1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 param1ActionPerformed(evt);
             }
         });
 
-        param2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10", "11", "12" }));
+        param2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10", "11", "12", " " }));
         param2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 param2ActionPerformed(evt);
@@ -135,7 +135,7 @@ public class debt_add_form extends javax.swing.JDialog {
                 .addGroup(panel_akademisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panel_tunggakan.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Data Tunggakan"));
@@ -310,7 +310,7 @@ public class debt_add_form extends javax.swing.JDialog {
                             .addComponent(semester1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(semester2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         process.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/update.png"))); // NOI18N
@@ -438,7 +438,7 @@ public class debt_add_form extends javax.swing.JDialog {
         // ------------------ validasi data dulu disini  -----------------
         if(years.equals("Pilih satu"))                      error_msg = "Tahun penerimaan tidak boleh kosong";
         else if(class_name.equals("Pilih satu"))            error_msg = "Kelas tidak boleh kosong";
-        else if(param3x.equals("") || param3x.equals("0"))  error_msg = "Besar tunggakan tidak boleh kosong";
+        else if(param3x.equals(""))  error_msg = "Besar tunggakan tidak boleh kosong";
         // ------------------ tambah validasi lainnya disini -----------------
         if(error_msg.equals("")){
             
@@ -446,7 +446,7 @@ public class debt_add_form extends javax.swing.JDialog {
             //BigDecimal amount   = new BigDecimal(param3x);
             
             JTable table_list_student2 = new JTable();
-            Object [] rows={"Kode Tunggakan","Subjek ","NIS","Nama Siswa","Besar Tunggakan","Status"};
+            Object [] rows={"Kode Tunggakan","Subjek ","NIS","Nama Siswa","Kelas","Besar Tunggakan","Status"};
             table_list2=new DefaultTableModel(null,rows);
             table_list_student2.setModel(table_list2);
             table_list_student2.setBorder(null);
@@ -463,7 +463,8 @@ public class debt_add_form extends javax.swing.JDialog {
                             String debt_subject     = subjek;
                             String student_id       = table_list_student.getValueAt(i,0).toString();
                             String student_fullname = table_list_student.getValueAt(i,1).toString();
-                            String[] tampil = {debt_code, debt_subject, student_id, student_fullname, param3x,"Belum Lunas"};
+                            String clas_name        = table_list_student.getValueAt(i,2).toString();
+                            String[] tampil = {debt_code, debt_subject, student_id, student_fullname, clas_name, param3x,"Belum Lunas"};
                             table_list2.addRow(tampil);
                         }
                     }
@@ -494,7 +495,8 @@ public class debt_add_form extends javax.swing.JDialog {
             
             String years        = (String) param1.getSelectedItem();
             String class_name   = (String) param2.getSelectedItem();
-
+            
+            // ambil semua data di table_list2
             Vector data_list = table_list2.getDataVector();
             
             int i;
@@ -503,7 +505,7 @@ public class debt_add_form extends javax.swing.JDialog {
                         // [QYRCJZH1, Desember 2012, 15167041, NASYWAH SABINA BELVA, 900, Belum Lunas]
 
                 sql = "INSERT INTO m_debt (debt_code, debt_description, years, student_id, class_name, debt_amount, debt_status)"
-                    + "VALUES ('"+data.get(0)+"','"+data.get(1)+"','"+years+"','"+data.get(2)+"','"+class_name+"','"+data.get(4)+"','"+data.get(5)+"') ";
+                    + "VALUES ('"+data.get(0)+"','"+data.get(1)+"','"+years+"','"+data.get(2)+"','"+data.get(4)+"','"+data.get(5)+"','"+data.get(6)+"') ";
                 stmt.executeUpdate(sql);
             }
             JOptionPane.showMessageDialog(rootPane,"Total "+i+" Data Tunggakan berhasil disimpan!","Berhasil",JOptionPane.INFORMATION_MESSAGE);
@@ -528,37 +530,7 @@ public class debt_add_form extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new sample_add_form().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox bulan1;
@@ -643,25 +615,26 @@ public class debt_add_form extends javax.swing.JDialog {
             table_list_student.setBorder(null);
             jScrollPane1.setVisible(true);
             jScrollPane1.setViewportView(table_list_student);
-            String student_id="",student_fullname="",class_name="",student_bplace="",student_bday="",student_sex="",student_address="",student_status="";
+            
             try{
                 
                 //String sql="select * from m_student";
                  if(!str_where.equals("")){
-                     sql  = "SELECT * FROM m_student WHERE student_status IN ('Aktif','Lulus') AND class_name = "+str_where;
+                     sql  = "SELECT * FROM m_student WHERE student_status IN ('Aktif','Lulus') AND class_name LIKE '"+str_where+"%' ORDER BY class_name,student_fullname ASC";
                  }
+                 System.out.println(sql);
                  
                 Statement st = dbconnect.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 while(rs.next()){
-                    student_id          = rs.getString("student_id");
-                    student_fullname    = rs.getString("student_fullname");
-                    class_name          = rs.getString("class_name");
-                    student_bplace      = rs.getString("student_bplace");
-                    student_bday        = rs.getString("student_bday");
-                    student_sex         = rs.getString("student_sex");
-                    student_address     = rs.getString("student_address");
-                    student_status      = rs.getString("student_status");
+                    String student_id          = rs.getString("student_id");
+                    String student_fullname    = rs.getString("student_fullname");
+                    String class_name          = rs.getString("class_name");
+                    String student_bplace      = rs.getString("student_bplace");
+                    String student_bday        = rs.getString("student_bday");
+                    String student_sex         = rs.getString("student_sex");
+                    String student_address     = rs.getString("student_address");
+                    String student_status      = rs.getString("student_status");
 
                     String [] tampil={student_id,student_fullname,class_name,student_bplace,student_bday,student_sex,student_address,student_status};
                     table_list.addRow(tampil);

@@ -6,14 +6,23 @@
 
 package smpis_system;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -62,6 +71,7 @@ public class debt_list_form extends javax.swing.JInternalFrame {
         table_list_debt = new javax.swing.JTable();
         add_new = new javax.swing.JButton();
         delete = new javax.swing.JButton();
+        print = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Master Data Tunggakan");
@@ -110,7 +120,7 @@ public class debt_list_form extends javax.swing.JInternalFrame {
             }
         });
 
-        param7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10", "11", "12" }));
+        param7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10-1", "10-2", "10-3", "10-4", "10-5", "10-6", "10-7", "10-8", "10-9", "10-10", "10-11", "10-12", "10-13", "10-14", "10-15", "11-1", "11-2", "11-3", "11-4", "11-5", "11-6", "11-7", "11-8", "11-9", "11-10", "11-11", "11-12", "11-13", "11-14", "11-15", "12-1", "12-2", "12-3", "12-4", "12-5", "12-6", "12-7", "12-8", "12-9", "12-10", "12-11", "12-12", "12-13", "12-14", "12-15", " " }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -221,6 +231,15 @@ public class debt_list_form extends javax.swing.JInternalFrame {
             }
         });
 
+        print.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/printer.png"))); // NOI18N
+        print.setText("Print");
+        print.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        print.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -230,9 +249,11 @@ public class debt_list_form extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                        .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(add_new)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(delete))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
@@ -245,9 +266,10 @@ public class debt_list_form extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(add_new)
-                        .addComponent(delete)))
+                        .addComponent(delete)
+                        .addComponent(print)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -273,10 +295,10 @@ public class debt_list_form extends javax.swing.JInternalFrame {
         where = "WHERE 1=1 ";
         if(!debt_code.equals(""))                                       where = where+" AND debt_code           = '"+debt_code+"'";
         if(!subject.equals(""))                                         where = where+" AND debt_description    LIKE '%"+subject+"%'";
-        if(!years.equals("") && !years.equals("Pilih satu"))             where = where+" AND years           = '"+years+"'";
-        if(!class_name.equals("") && !class_name.equals("Pilih satu"))   where = where+" AND class_name          = '"+class_name+"'";
+        if(!years.equals("") && !years.equals("Pilih satu"))            where = where+" AND years               = '"+years+"'";
+        if(!class_name.equals("") && !class_name.equals("Pilih satu"))  where = where+" AND class_name          = '"+class_name+"'";
         if(!student_id.equals(""))                                      where = where+" AND student_id          = '"+student_id+"'";
-        if(!student_name.equals(""))                                    where = where+" AND debt_description    LIKE '%"+student_name+"%'";
+        if(!student_name.equals(""))                                    where = where+" AND student_fullname    LIKE '%"+student_name+"%'";
         if(!status.equals("") && !status.equals("Pilih satu"))          where = where+" AND debt_status         = '"+status+"'";
         
         show_list(where);
@@ -356,6 +378,46 @@ public class debt_list_form extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_param5ActionPerformed
 
+    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+
+            String debt_code            = param1.getText();
+            String subject              = param2.getText();
+            String years                = (String) param5.getSelectedItem();
+            String class_name           = (String) param7.getSelectedItem();
+            String student_id           = param3.getText();
+            String student_name         = param4.getText();
+            String status               = (String) param6.getSelectedItem();
+
+            where = "WHERE 1=1 ";
+            if(!debt_code.equals(""))                                       where = where+" AND debt_code           = '"+debt_code+"'";
+            if(!subject.equals(""))                                         where = where+" AND debt_description    LIKE '%"+subject+"%'";
+            if(!years.equals("") && !years.equals("Pilih satu"))            where = where+" AND years           = '"+years+"'";
+            if(!class_name.equals("") && !class_name.equals("Pilih satu"))  where = where+" AND class_name          = '"+class_name+"'";
+            if(!student_id.equals(""))                                      where = where+" AND student_id          = '"+student_id+"'";
+            if(!student_name.equals(""))                                    where = where+" AND student_name    LIKE '%"+student_name+"%'";
+            if(!status.equals("") && !status.equals("Pilih satu"))          where = where+" AND debt_status         = '"+status+"'";
+
+            String Query     = "SELECT * FROM list_debt "+where;
+            System.out.println(Query);
+            Map params=new HashMap();
+            params.put("QueryString",Query);
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(new File("").getAbsolutePath()+"\\src\\laporan\\debt_report_list.jrxml"); //new File("").getAbsolutePath()+"src/com/ztscorp/lms/reports/HibernateQueryDemoReport.jrxml");
+            JasperPrint jasperPrint =
+            JasperFillManager.fillReport(
+            jasperReport, params, dbconnect);
+            JasperViewer.viewReport(jasperPrint, false);
+
+        }
+        catch (JRException e)
+        {
+            JOptionPane.showMessageDialog(rootPane,"Exception : "+e,"Exception",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_printActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_new;
@@ -376,11 +438,12 @@ public class debt_list_form extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox param5;
     private javax.swing.JComboBox param6;
     private javax.swing.JComboBox param7;
+    private javax.swing.JButton print;
     private javax.swing.JTable table_list_debt;
     // End of variables declaration//GEN-END:variables
 
     private void show_list(String str_where) {        
-       Object [] rows={"Tahun Ajaran","Kode Tunggakan","Subjek","NIS","Nama Siswa","Besar Tunggakan","Status"};
+            Object [] rows={"Tahun Ajaran","Kode Tunggakan","Subjek","NIS","Nama Siswa","Besar Tunggakan","Status"};
             table_list=new DefaultTableModel(null,rows);
             table_list_debt.setModel(table_list);
             table_list_debt.setBorder(null);

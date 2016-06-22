@@ -1,0 +1,15 @@
+Mon 2016/06/20 13:13:47 gammu-smsd-inject[10376]: Configuring Gammu SMSD...
+Mon 2016/06/20 13:13:47 gammu-smsd-inject[10376]: PIN code is "1234"
+Mon 2016/06/20 13:13:47 gammu-smsd-inject[10376]: commtimeout=10, sendtimeout=30, receivefrequency=0, resetfrequency=0, checksecurity=1
+Mon 2016/06/20 13:13:47 gammu-smsd-inject[10376]: deliveryreport = no
+Mon 2016/06/20 13:13:47 gammu-smsd-inject[10376]: phoneid = 
+Mon 2016/06/20 13:13:47 gammu-smsd-inject[10376]: Error connecting to database: Unknown database 'mysms'
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: Configuring Gammu SMSD...
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: PIN code is "1234"
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: commtimeout=10, sendtimeout=30, receivefrequency=0, resetfrequency=0, checksecurity=1
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: deliveryreport = no
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: phoneid = 
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: Database structures version: 10, SMSD current version: 10
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: Connected to Database: db_sekolah on localhost
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: Written message with ID 6
+Mon 2016/06/20 13:15:01 gammu-smsd-inject[9792]: Disconnecting from MySQL

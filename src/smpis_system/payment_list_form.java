@@ -6,14 +6,24 @@
 
 package smpis_system;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -45,24 +55,22 @@ public class payment_list_form extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        param1 = new javax.swing.JTextField();
         param2 = new javax.swing.JTextField();
         param3 = new javax.swing.JTextField();
+        param4 = new javax.swing.JTextField();
         param6 = new javax.swing.JComboBox();
         filter = new javax.swing.JButton();
         clear = new javax.swing.JButton();
-        param4 = new javax.swing.JTextField();
-        param5 = new javax.swing.JComboBox();
-        param7 = new javax.swing.JTextField();
-        param8 = new javax.swing.JTextField();
+        param5 = new javax.swing.JTextField();
+        param1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table_list_student = new javax.swing.JTable();
+        table_list_payment = new javax.swing.JTable();
         add_new = new javax.swing.JButton();
         delete = new javax.swing.JButton();
+        print = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Data Transaksi Pembayaran");
@@ -73,13 +81,11 @@ public class payment_list_form extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Subjek");
 
-        jLabel3.setText("Tahun Ajaran, Kelas");
-
         jLabel4.setText("NIS, Nama Siswa");
 
         jLabel5.setText("Status");
 
-        param6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "Active", "Suspend", "Deleted" }));
+        param6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "Completed", "Deleted" }));
         param6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 param6ActionPerformed(evt);
@@ -104,88 +110,77 @@ public class payment_list_form extends javax.swing.JInternalFrame {
             }
         });
 
-        param5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "2012/2013", "2013/2014", "2014/2015", "2015/2016", "2016/2017", "2017/2018", "2018/2019", "2019/2020" }));
-        param5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                param5ActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("No Ref");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(79, 79, 79)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(param5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(param6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(147, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6))
+                        .addGap(83, 83, 83)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(386, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addGap(62, 62, 62)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(param5, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(param7, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(param8, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(param6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(param8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGap(3, 3, 3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(param5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(param7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2)
+                    .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(param5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(param6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filter)
-                    .addComponent(clear)))
+                    .addComponent(clear))
+                .addContainerGap())
         );
 
-        table_list_student.setModel(new javax.swing.table.DefaultTableModel(
+        table_list_payment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -208,7 +203,7 @@ public class payment_list_form extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table_list_student);
+        jScrollPane1.setViewportView(table_list_payment);
 
         add_new.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/pencil_add.png"))); // NOI18N
         add_new.setText("Tambah");
@@ -227,6 +222,15 @@ public class payment_list_form extends javax.swing.JInternalFrame {
             }
         });
 
+        print.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/printer.png"))); // NOI18N
+        print.setText("Print");
+        print.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        print.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -236,11 +240,13 @@ public class payment_list_form extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(add_new, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(delete))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -251,9 +257,10 @@ public class payment_list_form extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(add_new)
-                        .addComponent(delete)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                        .addComponent(delete)
+                        .addComponent(print)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -267,27 +274,30 @@ public class payment_list_form extends javax.swing.JInternalFrame {
     private void filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterActionPerformed
         // TODO add your handling code here:
 
-        String id                   = param1.getText();
-        String name                 = param2.getText();
-        String clas                 = param3.getText();
-        String sex_l                = param4.getText();
+        String payment_code         = param1.getText();
+        String debt_code            = param2.getText();
+        String payment_subject      = param3.getText();
+        String student_id           = param4.getText();
+        String student_name         = param5.getText();
         String status               = (String) param6.getSelectedItem();
 
 
         where = "WHERE 1=1 ";
-        if(!id.equals(""))                                      where = where+" AND student_id          = '"+id+"'";
-        if(!name.equals(""))                                    where = where+" AND student_fullname    LIKE '%"+name+"%'";
-        if(!clas.equals(""))                                    where = where+" AND class_name          = '"+clas+"'";
-        if(!status.equals("") && !status.equals("Pilih satu"))  where = where+" AND student_status      = '"+status+"'";
+        if(!payment_code.equals(""))                                where = where+" AND payment_code          = '"+payment_code+"'";
+        if(!debt_code.equals(""))                                   where = where+" AND debt_code             = '"+debt_code+"'";
+        if(!payment_subject.equals(""))                             where = where+" AND payment_subject       LIKE '%"+payment_subject+"%'";
+        if(!student_id.equals(""))                                  where = where+" AND student_id            = '"+student_id+"'";
+        if(!student_name.equals(""))                                where = where+" AND student_fullname      LIKE '%"+student_name+"%'";
+        if(!status.equals("") && !status.equals("Pilih satu"))      where = where+" AND payment_status        = '"+status+"'";
 
         show_list(where);
     }//GEN-LAST:event_filterActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
-        param1.setText("");
         param2.setText("");
         param3.setText("");
+        param4.setText("");
         param6.setSelectedItem("Pilih satu");
         show_list(where);
     }//GEN-LAST:event_clearActionPerformed
@@ -303,7 +313,7 @@ public class payment_list_form extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         try{
 
-            key = (String) table_list_student.getValueAt(table_list_student.getSelectedRow(),0);
+            key = (String) table_list_payment.getValueAt(table_list_payment.getSelectedRow(),0);
             System.out.println(key);
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(this, "Anda yakin ingin menghapus data "+key+"?", "Hapus Data "+key, dialogButton);
@@ -332,9 +342,47 @@ public class payment_list_form extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_deleteActionPerformed
 
-    private void param5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_param5ActionPerformed
+    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_param5ActionPerformed
+          try
+        {   
+            String payref = "";
+            if (table_list_payment.getRowCount() > 0) {
+                if (table_list_payment.getSelectedRowCount() > 0) {
+                int[] selectedRow = table_list_payment.getSelectedRows();
+                    for (int i : selectedRow) {
+                            String payment_code       = table_list_payment.getValueAt(i,0).toString();
+                            //String student_id         = table_list_payment.getValueAt(i,3).toString();
+                         payref += "'"+payment_code+"',";
+                    }
+                    
+                String ref      = payref.substring(0, payref.length()-1);
+                key = (String) table_list_payment.getValueAt(table_list_payment.getSelectedRow(),3);
+                String Query     = "SELECT a.*, b.payment_ref, b.payment_subject, b.payment_amount, b.payment_date, b.payment_status a "
+                                   + " FROM t_payment b LEFT JOIN m_student a ON a.student_id = b.student_id WHERE b.student_id = '"+key+"' AND b.payment_ref IN ("+ref+")";
+                System.out.println(Query);
+                Map params=new HashMap();
+                params.put("QueryString",Query);
+
+                JasperReport jasperReport = JasperCompileManager.compileReport(new File("").getAbsolutePath()+"\\src\\laporan\\payment_reports.jrxml"); 
+                JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(
+                    jasperReport, params, dbconnect);
+
+                //JasperExportManager.exportReportToHtmlFile(
+                //    jasperPrint, new File("").getAbsolutePath()+"\\src\\laporan\\student_report_list_htm"+".html");
+
+                JasperViewer.viewReport(jasperPrint, false);
+                    
+                }else JOptionPane.showMessageDialog(rootPane,"Error : Tidak ada data terseleksi!","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+        catch (JRException e)
+        {
+            JOptionPane.showMessageDialog(rootPane,"Exception : "+e,"Exception",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_printActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -344,7 +392,6 @@ public class payment_list_form extends javax.swing.JInternalFrame {
     private javax.swing.JButton filter;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -354,14 +401,45 @@ public class payment_list_form extends javax.swing.JInternalFrame {
     private javax.swing.JTextField param2;
     private javax.swing.JTextField param3;
     private javax.swing.JTextField param4;
-    private javax.swing.JComboBox param5;
+    private javax.swing.JTextField param5;
     private javax.swing.JComboBox param6;
-    private javax.swing.JTextField param7;
-    private javax.swing.JTextField param8;
-    private javax.swing.JTable table_list_student;
+    private javax.swing.JButton print;
+    private javax.swing.JTable table_list_payment;
     // End of variables declaration//GEN-END:variables
 
     private void show_list(String str_where) {        
-       System.out.println(str_where);
+        Object [] rows={"Payment Reff","Kode Tunggakan","Subjek","NIS","Nama Siswa","Besar Pembayaran","Status"};
+            table_list=new DefaultTableModel(null,rows);
+            table_list_payment.setModel(table_list);
+            table_list_payment.setBorder(null);
+            jScrollPane1.setVisible(true);
+            jScrollPane1.setViewportView(table_list_payment);
+            
+            try{
+                
+                //String sql="select * from m_student";
+                 if(!str_where.equals("")){
+                     sql  = "SELECT * FROM list_payment "+str_where;
+                 }else{
+                     sql  = "SELECT * FROM list_payment";
+                 }
+                System.out.println(sql); 
+                Statement st = dbconnect.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while(rs.next()){
+                    String payment_ref          = rs.getString("payment_ref");
+                    String debt_code            = rs.getString("debt_code");
+                    String subject              = rs.getString("payment_subject");
+                    String student_id           = rs.getString("student_id");
+                    String student_name         = rs.getString("student_fullname");
+                    String payment_amount       = rs.getString("payment_amount");
+                    String payment_status       = rs.getString("payment_status");
+
+                    String [] tampil={payment_ref, debt_code, subject, student_id, student_name, payment_amount, payment_status};
+                    table_list.addRow(tampil);
+                }
+            }catch(SQLException e){
+                JOptionPane.showMessageDialog(null,"Terdapat kesalahan query : "+e);
+            }
     }
 }

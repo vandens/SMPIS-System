@@ -6,16 +6,49 @@
 
 package smpis_system;
 
+import java.awt.Window;
+import java.io.File;
+import java.lang.String;
+import java.security.SecureRandom;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
+
 /**
  *
  * @author vandens
  */
 public class payment_add_form extends javax.swing.JDialog {
+    private payment_list_student dialogPanel;
+    public Connection dbconnect = dbconnection.getConnection();
+    private JDialog dialog;
+    private DefaultTableModel table_list;
+    private String error_msg = "";
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
+    private String student_id;
 
     /**
      * Creates new form sample_add_form
      */
     public payment_add_form() {
+        this.dialogPanel = new payment_list_student();
         initComponents();
         setModal(true);
     }
@@ -33,15 +66,17 @@ public class payment_add_form extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        param8 = new javax.swing.JTextField();
-        param9 = new javax.swing.JTextField();
+        param1 = new javax.swing.JTextField();
+        param2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        param10 = new javax.swing.JTextField();
+        param3 = new javax.swing.JTextField();
         find = new javax.swing.JButton();
+        param4 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_list_debt_confirm = new javax.swing.JTable();
-        update = new javax.swing.JButton();
+        save_print = new javax.swing.JButton();
         save = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -59,7 +94,13 @@ public class payment_add_form extends javax.swing.JDialog {
 
         jLabel5.setText("Nama Siswa");
 
+        param1.setEnabled(false);
+
+        param2.setEnabled(false);
+
         jLabel6.setText("Kelas");
+
+        param3.setEnabled(false);
 
         find.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/find.png"))); // NOI18N
         find.addActionListener(new java.awt.event.ActionListener() {
@@ -68,25 +109,36 @@ public class payment_add_form extends javax.swing.JDialog {
             }
         });
 
+        param4.setEnabled(false);
+
+        jLabel7.setText("No Telp");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addGap(52, 52, 52)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(param8, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(find, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(param9, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(param10, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(672, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(52, 52, 52)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(find, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(88, 88, 88)))
+                .addContainerGap(666, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,16 +148,20 @@ public class payment_add_form extends javax.swing.JDialog {
                     .addComponent(find, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(param8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(param1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(param9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(param2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(param10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(param4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Data Tunggakan"));
@@ -115,14 +171,14 @@ public class payment_add_form extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Tahun Ajaran", "Kode Tunggakan", "Subjek", "NIS", "Nama Siswa", "Kelas", "Besar Tunggakan", "Status"
+                "Tahun Ajaran", "Kode Tunggakan", "Subjek", "Besar Tunggakan", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -139,27 +195,29 @@ public class payment_add_form extends javax.swing.JDialog {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1007, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(160, 160, 160))
         );
 
-        update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/update.png"))); // NOI18N
-        update.setText("Proses");
-        update.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        update.addActionListener(new java.awt.event.ActionListener() {
+        save_print.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/printer_add.png"))); // NOI18N
+        save_print.setText("Simpan dan Cetak");
+        save_print.setEnabled(false);
+        save_print.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        save_print.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateActionPerformed(evt);
+                save_printActionPerformed(evt);
             }
         });
 
         save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/save_as.png"))); // NOI18N
         save.setText("Simpan");
+        save.setEnabled(false);
         save.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,8 +289,8 @@ public class payment_add_form extends javax.swing.JDialog {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(update)
+                        .addGap(0, 666, Short.MAX_VALUE)
+                        .addComponent(save_print)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(save)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -247,10 +305,10 @@ public class payment_add_form extends javax.swing.JDialog {
                 .addGap(13, 13, 13)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(update)
+                    .addComponent(save_print)
                     .addComponent(save)
                     .addComponent(cancel))
                 .addContainerGap())
@@ -259,16 +317,14 @@ public class payment_add_form extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+    private void save_printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_printActionPerformed
         // TODO add your handling code here:
-        sample_update();
-        this.dispose();
-    }//GEN-LAST:event_updateActionPerformed
+        save_payment(true);
+    }//GEN-LAST:event_save_printActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        sample_save();
-        clear_text();
+        save_payment(false);
     }//GEN-LAST:event_saveActionPerformed
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
@@ -277,46 +333,21 @@ public class payment_add_form extends javax.swing.JDialog {
     }//GEN-LAST:event_cancelActionPerformed
 
     private void findActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findActionPerformed
-        // TODO add your handling code here:
-        payment_list_student form = new payment_list_student();
-        form.setLocationRelativeTo(null);
-        form.setVisible(true);        
+        // TODO add your handling code here:        
+        if (dialog == null) {
+         Window win = SwingUtilities.getWindowAncestor(this);
+         if (win != null) {
+            dialog = new JDialog(win, "Form Pencarian Data",ModalityType.APPLICATION_MODAL);
+            dialog.getContentPane().add(dialogPanel);
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+         }
+      }
+      dialog.setVisible(true); 
+      get_debt_data();
     }//GEN-LAST:event_findActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(sample_add_form.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new sample_add_form().setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel;
@@ -328,27 +359,180 @@ public class payment_add_form extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField param10;
-    private javax.swing.JTextField param8;
-    private javax.swing.JTextField param9;
+    private javax.swing.JTextField param1;
+    private javax.swing.JTextField param2;
+    private javax.swing.JTextField param3;
+    private javax.swing.JTextField param4;
     private javax.swing.JButton save;
+    private javax.swing.JButton save_print;
     private javax.swing.JTable table_list_debt_confirm;
-    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 
-    private void sample_update() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void get_debt_data() {
+        
+        try{
+         // ambil parameter yang di klik   
+         String NIS   = dialogPanel.get_NIS();
+         
+         // ambil data nama dan kelas
+         Statement st = dbconnect.createStatement();
+         ResultSet rs = st.executeQuery("SELECT student_fullname, class_name, student_parent_phone FROM m_student WHERE student_id = '"+NIS+"'");
+         
+         // jika ada
+         if(rs.next()){
+            param1.setText(NIS);
+            param2.setText(rs.getString("student_fullname"));
+            param3.setText(rs.getString("class_name"));
+            param4.setText(rs.getString("student_parent_phone"));
+            
+            // tampilkan data tunggakan siswa YBS
+            Object [] rows={"Tahun Ajaran","Kode Tunggakan","Subjek","Besar Tunggakan","Status"};            
+            table_list=new DefaultTableModel(null,rows);
+            table_list_debt_confirm.setModel(table_list);
+            table_list_debt_confirm.setBorder(null);
+            table_list_debt_confirm.getColumnModel().getColumn(4).setPreferredWidth(220);
+            jScrollPane1.setVisible(true);
+            jScrollPane1.setViewportView(table_list_debt_confirm);
+            
+            Statement get_debt_stet = dbconnect.createStatement();
+            ResultSet list_debt     = get_debt_stet.executeQuery("SELECT * FROM list_debt WHERE debt_status = 'Belum Lunas' AND student_id = '"+NIS+"'");
+            
+            
+            while(list_debt.next()){
+                    String years                = list_debt.getString("years");
+                    String debt_code            = list_debt.getString("debt_code");
+                    String subject              = list_debt.getString("debt_description");
+                    String debt_amount          = list_debt.getString("debt_amount");
+                    String debt_status          = list_debt.getString("debt_status");
+
+                    String [] tampil={years, debt_code, subject,debt_amount, debt_status};
+                    table_list.addRow(tampil);
+                    
+                }
+                save.setEnabled(true);
+                save_print.setEnabled(true);
+            }
+         
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane,"Exception : "+e,"Exception",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    private void sample_save() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void save_payment(boolean is_print){
+        save.setEnabled(false);
+        save_print.setEnabled(false);
+        
+        if(table_list_debt_confirm.getSelectedRowCount() == 0)
+            error_msg   = "Tidak ada data terseleksi";        
+        
+        
+        if(!error_msg.equals("")){
+            JOptionPane.showMessageDialog(rootPane,"Error : "+error_msg,"Error",JOptionPane.ERROR_MESSAGE);
+        }else{
+            
+            try{
+                Statement stmt = dbconnect.createStatement();
+                Date tgl        = new Date();
+                SimpleDateFormat f  = new SimpleDateFormat("yyyy-MM-dd");
+                String payment_date = f.format(tgl);
+
+                int[] selectedRow = table_list_debt_confirm.getSelectedRows();
+                int counter = 0;
+                String payref = "";
+                
+                student_id                      = param1.getText();
+                String class_name               = param3.getText();
+                for (int i : selectedRow) {
+                    String payment_code             = random_string(8).toUpperCase();
+                    String debt_code                = table_list_debt_confirm.getValueAt(i,1).toString();
+                    String payment_subject          = table_list_debt_confirm.getValueAt(i,2).toString();
+                    String payment_amount           = table_list_debt_confirm.getValueAt(i,3).toString();
+                    
+
+
+                    // 1. INSERT table t_payment
+                    String sql  = "INSERT INTO t_payment (payment_ref, debt_code, payment_subject, student_id, class_name, payment_date, payment_amount, payment_status) "
+                                  + "VALUES ('"+payment_code+"','"+debt_code+"','"+payment_subject+"','"+student_id+"','"+class_name+"','"+payment_date+"','"+payment_amount+"','Completed')";
+                    stmt.executeUpdate(sql);
+                    
+                    
+                    // 2. UPDATE status m_debt
+                    stmt.executeUpdate("UPDATE m_debt SET debt_status = 'Lunas' WHERE debt_code = '"+debt_code+"'");
+
+                    if(!"".equals(param4.getText()))
+                    // 3. KIRIM SMS
+                    stmt.executeUpdate("INSERT INTO outbox (DestinationNumber, TextDecoded, SenderID, CreatorID) VALUES ('"+param4.getText()+"', 'SPP "+payment_subject+" dibayar LUNAS dgn ref#"+payment_code+"', '"+student_id+"' ,'smpis_system')");
+
+                    System.out.println(payment_code+" "+debt_code+" "+payment_subject+" "+payment_amount+" "+student_id+" "+payment_date);
+                    counter++;
+                    payref += "'"+payment_code+"',";
+                }
+
+                this.dispose();
+                JOptionPane.showMessageDialog(rootPane,"Total "+counter+" Data pembayaran berhasil disimpan!","Berhasil",JOptionPane.INFORMATION_MESSAGE);
+                    
+                if(is_print)
+                    print_payment(student_id, payref);
+                
+            
+            }catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane,"Exception : "+e,"Exception",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+        
+    }
+    
+  
+   
+    private void print_payment(String student_id, String payref){
+         String ref      = payref.substring(0, payref.length()-1);
+         
+          try
+        {   
+            
+            String Query     = "SELECT a.*, b.payment_ref, b.payment_subject, b.payment_amount, b.payment_date, b.payment_status a "
+                               + " FROM t_payment b LEFT JOIN m_student a ON a.student_id = b.student_id WHERE b.student_id = '"+student_id+"' AND b.payment_ref IN ("+ref+")";
+            System.out.println(Query);
+            Map params=new HashMap();
+            params.put("QueryString",Query);
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(new File("").getAbsolutePath()+"\\src\\laporan\\payment_reports.jrxml"); 
+            JasperPrint jasperPrint =
+                JasperFillManager.fillReport(
+                jasperReport, params, dbconnect);
+            
+            //JasperExportManager.exportReportToHtmlFile(
+            //    jasperPrint, new File("").getAbsolutePath()+"\\src\\laporan\\student_report_list_htm"+".html");
+            
+            JasperViewer.viewReport(jasperPrint, false);
+            
+        }
+        catch (JRException e)
+        {
+            JOptionPane.showMessageDialog(rootPane,"Exception : "+e,"Exception",JOptionPane.ERROR_MESSAGE);
+        }
+          
+        // JOptionPane.showMessageDialog(rootPane,"Cetak transaksi "+student_id+"; payref = "+ref,"Berhasil",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void send_SMS(){
+        
+    }
+    
+    
+
+    private String random_string(int len) {
+        StringBuilder sb = new StringBuilder( len );
+           for( int i = 0; i < len; i++ ) 
+              sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+           return sb.toString();
     }
 
-    private void clear_text() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+ 
 }

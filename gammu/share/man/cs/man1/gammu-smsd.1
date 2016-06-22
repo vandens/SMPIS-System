@@ -1,0 +1,146 @@
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH GAMMU\-SMSD 1 "Leden  15, 2009" "Gammu 1.23.0" "Dokumentace Gammu"
+.SH JMÉNO
+gammu\-smsd \- SMS démon pro Gammu
+.SH SYNTAXE
+\fBgammu\-smsd\fP [\fIPARAMETR\fP]...
+.SH POPIS
+Tato manuálová stránka stručně popisuje příkaz \fBgammu\-smsd\fP.
+.PP
+\fBgammu\-smsd\fP je program, který pravidelně kontroluje GSM modem a přijímá
+zprávy,ukládá je na zadaném místě a také odesílá zprávy, které jsou ve
+frontě.
+.PP
+Démon umí znovu načíst konfigurační soubor pokud mu byl zaslán signál hangup
+(SIGHUP) a korektně se ukončí při signálech SIGINT a SIGTERM.
+.PP
+Program přijímá následující parametry (dlouhé parametry nemusí být
+podporovány na všechplatformách):
+.TP 
+\fB\-h\fP, \fB\-\-help\fP
+Zobrazí nápovědu.
+.TP 
+\fB\-v\fP, \fB\-\-version\fP
+Zobrazí informace o verzi a zakompilované funkcionalitě.
+.TP 
+\fB\-c\fP, \fB\-\-config\fP=\fIsoubor\fP
+Jaký konfigurační soubor se má použít, výchozí je /etc/gammu\-smsdrc, na
+systému Windows není žádná výchozí cesta a cesta ke konfiguračnímu souboru
+musí být zadána vždy.
+.TP 
+\fB\-p\fP, \fB\-\-pid\fP=\fIsoubor\fP
+Zamykací soubor, kde bude uložený PID (id procesu), prázdná cesta vypne tuto
+funkci. Není podporováno na Windows.
+.TP 
+\fB\-U\fP, \fB\-\-user\fP=\fIuživatel\fP
+Omezí oprávění uživatele po spuštění na vybraného uživatele.
+.TP 
+\fB\-G\fP, \fB\-\-group\fP=\fIskupina\fP
+Omezí oprávění uživatele po spuštění na vybranou skupinu.
+.TP 
+\fB\-d\fP, \fB\-\-daemon\fP
+Spustí program jako démona. Není podporováno na Windows.
+.TP 
+\fB\-i\fP, \fB\-\-install\-service\fP
+Nainstaluje SMSD jako službu ve Windows.
+.TP 
+\fB\-u\fP, \fB\-\-uninstall\-service\fP
+Odinstaluje SMSD jako službu ve Windows.
+.TP 
+\fB\-s\fP, \fB\-\-start\-service\fP
+Spustí SMSD službu ve Windows.
+.TP 
+\fB\-k\fP, \fB\-\-stop\-service\fP
+Ukončí SMSD službu ve Windows.
+.TP 
+\fB\-X\fP, \fB\-\-suicide\fP=\fIsekundy\fP
+Zabije se po zadaném počtu sekund.
+.TP 
+\fB\-S\fP, \fB\-\-run\-service\fP
+Spustí program jako službu Windows. Tato volba je určena pro spouštění ze
+správce služeb a neměla by být používana.
+.TP 
+\fB\-n\fP, \fB\-\-service\-name\fP=\fIname\fP
+Určí jméno služby ve Windows. Každá služba potřebuje unikátní jméno, takže
+pokud chcete mít spuštěných více instancí SMSD, musíte pojmenovat každou
+instanci jinak. Výchozí jméno je "GammuSMSD".
+
+.SH PŘÍKLAD
+
+.SS "Příklady pro Linux/Unix"
+
+.TP 
+Spuštění SMSD jako démon na Linuxu:
+
+gammu\-smsd \-\-config /etc/gammu\-smsdrc \-\-pid /var/run/gammu\-smsd.pid \-\-daemon
+
+.TP 
+Spuštění SMSD jako démon s omezenými právy na Linuxu:
+
+gammu\-smsd \-\-config /etc/gammu\-smsdrc \-\-pid /var/run/gammu\-smsd.pid \-\-daemon
+\-\-user gammu \-\-group gammu
+
+
+.SS "Příklady se službou pro Windows"
+
+.TP 
+Instalace SMSD jako služba ve Windows:
+
+gammu\-smsd.exe \-c c:\eGammu\esmsdrc \-i
+
+.TP 
+Instalace dvou SMSD jako služby ve Windows.
+
+gammu\-smsd.exe \-c c:\eGammu\esmsdrc\-1 \-n Gammu\-first\-phone \-i
+
+gammu\-smsd.exe \-c c:\eGammu\esmsdrc\-2 \-n Gammu\-second\-phone \-i
+
+.TP 
+Odinstalace SMSD služby ve Windows.
+
+gammu\-smsd.exe \-u
+
+.SS "Problémy se službou ve Windows"
+
+If Gammu fails to start as a Windows service (you will usually get "Error
+1053: The service did not respond to the start or control request in a
+timely fashion"), first check your SMSD logs. If they do not contain any
+useful hint, try starting SMSD manually with exactly same parameters as you
+installed the service (without \-i), for example:
+
+    gammu\-smsd.exe \-c smsdrc
+
+Nyní by mělo být možné dostat popis chyb i když SMSD nejde spustit jako
+služba.
+
+.SH "DALŠÍ INFORMACE"
+gammu\-smsdrc(5), gammu(1), gammu\-smsd\-inject(1), gammu\-smsd\-monitor(1)
+
+gammu\-smsd\-files(7), gammu\-smsd\-mysql(7), gammu\-smsd\-pgsql(7),
+gammu\-smsd\-dbi(7), gammu\-smsd\-tables(7)
+.SH AUTOR
+gammu\-smsd a tuto manuálovou stránku napsal Michal Čihař
+<michal@cihar.com>.
+.SH COPYRIGHT
+Copyright \(co 2009 Michal Čihař a další autoři.  Licence GPLv2: GNU GPL
+verze 2 <http://www.gnu.org/licenses/old\-licenses/gpl\-2.0.html>
+.br
+Tento program je volný software; můžete jej šířit a modifikovat.  Není
+poskytována ŽÁDNÁ ZÁRUKA, v rozsahu jaký je povolen zákonem.
+.SH "HLÁŠENÍ CHYB"
+Prosím hlašte chyby na <http://bugs.cihar.com>.
+
+Před hlášením chyb prosím zapněte logovaní v nastavení SMSD:
+
+    [gammu]
+    logformat = textall
+
+    [smsd]
+    debuglevel = 255
+    logfile = smsd.log
+
+a přiložte tento log k hlášení chyby.

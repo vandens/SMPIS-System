@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="payment_reports" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7e320bb6-1c63-442e-9872-4185d4dab25a">
+	<property name="ireport.zoom" value="1.6105100000000019"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="month" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM v_payment_report_per_month
+WHERE month_of_payment = $P{month}
+AND year_of_payment = $P{year}]]>
+	</queryString>
+	<field name="month_of_payment" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="year_of_payment" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="days" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_tx" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_payment" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="payment_status" class="java.lang.String">
+		<fieldDescription><![CDATA[Completed, Deleted]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="101" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="75" y="17" width="455" height="33" backcolor="#000000" uuid="85bbf4b3-06fe-44dd-b7a6-39b76d1a016c"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SMA NEGERI 6 KAB. TANGERANG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Title" x="0" y="74" width="435" height="21" uuid="66f432f0-dfc7-421a-8a8a-f71e7a5204be"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Laporan Transaksi Bulan : ]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="95" width="555" height="1" uuid="1a54c6c2-33e3-4d6e-ace0-414f1da506dd"/>
+			</line>
+			<staticText>
+				<reportElement style="SubTitle" x="75" y="50" width="455" height="23" uuid="779940cb-cbdf-4de5-8ffc-eb00777181ca"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jalan Aria Jaya Sentika No. 52 Pasirnangka, Tigaraksa - Tangerang, 15720 - (021) 5990276]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="73" width="555" height="1" uuid="5f81961d-a2b0-4929-854b-bb3ef63fceab"/>
+			</line>
+			<image>
+				<reportElement x="12" y="17" width="63" height="46" uuid="1493c0a8-e7db-4564-923d-8d08be461186"/>
+				<imageExpression><![CDATA[new File("").getAbsolutePath()+"/src/laporan/logo-in.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="152" y="75" width="26" height="20" uuid="3b82bd24-2381-467b-9161-1a5d3a07ec75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{month}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="75" width="100" height="20" uuid="3a28a5ff-1fe5-44d8-985b-985f2dc42bab"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{year}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="762411db-ae8a-4b62-8d4e-61f2a6df122b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="12" y="0" width="185" height="15" forecolor="#736343" uuid="2654a83c-d1b7-4188-bae5-dfadd5de9a2c"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="197" y="0" width="124" height="15" forecolor="#736343" uuid="7c99fc21-0c64-4004-b53a-643171885eb9"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Total Transaksi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="321" y="0" width="139" height="15" forecolor="#736343" uuid="37757fa0-3b59-44fc-8804-83bd0531de00"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Total Pembayaran]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="460" y="1" width="95" height="15" forecolor="#736343" uuid="689e09c2-b5a6-43f1-8986-85c4683a0d80"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="588e2987-be18-4d09-b5e3-526ca96d6db7"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="12" y="0" width="185" height="15" uuid="9f5e828d-c7dc-4c7e-bfcc-700dac0f7e91"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{days}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="339" y="0" width="109" height="15" uuid="095217ff-0ef8-447e-aaf1-f6d6028c5f63"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total_payment}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="460" y="0" width="95" height="15" uuid="4af344f8-d00a-407a-87bc-cbb3d0989012"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{payment_status}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="321" y="0" width="18" height="15" forecolor="#000000" uuid="2561073e-e344-4678-82ca-4b31e2e7884d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="9" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Rp]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="197" y="0" width="124" height="15" uuid="0fa589b7-31fc-4ee1-b4d4-306b0cf81050"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial Narrow" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total_tx}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="50"/>
+	</summary>
+</jasperReport>

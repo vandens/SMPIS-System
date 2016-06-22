@@ -73,6 +73,8 @@ public class student_add_form extends javax.swing.JDialog {
         date_param3 = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         param8 = new javax.swing.JComboBox();
+        param9 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         update = new javax.swing.JButton();
         save = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
@@ -90,14 +92,14 @@ public class student_add_form extends javax.swing.JDialog {
 
         jLabel5.setText("Kelas");
 
-        param1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "2012/2013", "2013/2014", "2014/2015", "2015/2016", "2016/2017", "2017/2018", "2018/2019", "2019/2020" }));
+        param1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "2015/2016", "2016/2017", "2017/2018", "2018/2019", "2019/2020" }));
         param1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 param1ActionPerformed(evt);
             }
         });
 
-        param2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10", "11", "12" }));
+        param2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "10-1", "10-2", "10-3", "10-4", "10-5", "10-6", "10-7", "10-8", "10-9", "10-10", "10-11", "10-12", "10-13", "10-14", "10-15", "11-1", "11-2", "11-3", "11-4", "11-5", "11-6", "11-7", "11-8", "11-9", "11-10", "11-11", "11-12", "11-13", "11-14", "11-15", "12-1", "12-2", "12-3", "12-4", "12-5", "12-6", "12-7", "12-8", "12-9", "12-10", "12-11", "12-12", "12-13", "12-14", "12-15", " " }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -182,6 +184,14 @@ public class student_add_form extends javax.swing.JDialog {
 
         param8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih satu", "Laki-laki", "Perempuan" }));
 
+        param9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                param9ActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("No Telp Wali / Org Tua");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -189,26 +199,28 @@ public class student_add_form extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6))
-                        .addGap(123, 123, 123)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(param8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(param6, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel9)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(70, 70, 70))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addGap(70, 70, 70))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addGap(89, 89, 89)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(89, 89, 89)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel12))
+                                .addGap(67, 67, 67)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(param9, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(param8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(param6, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(param3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -221,7 +233,7 @@ public class student_add_form extends javax.swing.JDialog {
                                     .addComponent(param4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(date_param3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,14 +261,15 @@ public class student_add_form extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
                     .addComponent(param6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(param9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap())
         );
 
         update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/update.png"))); // NOI18N
@@ -354,10 +367,10 @@ public class student_add_form extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(update)
@@ -412,6 +425,10 @@ public class student_add_form extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_cancelActionPerformed
 
+    private void param9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_param9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_param9ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel;
@@ -420,6 +437,7 @@ public class student_add_form extends javax.swing.JDialog {
     private javax.swing.JComboBox date_param3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -442,6 +460,7 @@ public class student_add_form extends javax.swing.JDialog {
     private javax.swing.JComboBox param6;
     private javax.swing.JTextArea param7;
     private javax.swing.JComboBox param8;
+    private javax.swing.JTextField param9;
     private javax.swing.JButton save;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
@@ -459,6 +478,7 @@ public class student_add_form extends javax.swing.JDialog {
         param6.setSelectedItem("Pilih satu");
         param7.setText("");
         param8.setSelectedItem("Pilih satu");
+        param9.setText("");
     }
     
     public void student_save(){
@@ -474,6 +494,7 @@ public class student_add_form extends javax.swing.JDialog {
         String month            = (String) date_param2.getSelectedItem();
         String year             = (String) date_param3.getSelectedItem();
         String student_address  = param7.getText();
+        String student_phone    = param9.getText();
         
         
         // ------------------ validasi data dulu disini  -----------------
@@ -495,9 +516,9 @@ public class student_add_form extends javax.swing.JDialog {
                     String student_sex  = ("Laki-laki".equals(st_sex)) ? "L" : "P";
                     Statement stmt = dbconnect.createStatement();
                     sql = "INSERT INTO m_student"
-                                    + "(years, class_name, student_id, student_fullname, student_sex, student_bplace, student_bday, student_religion, student_address)"
+                                    + "(years, class_name, student_id, student_fullname, student_sex, student_bplace, student_bday, student_religion, student_parent_phone, student_address)"
                                     + " VALUE"
-                                    + "('"+years+"','"+class_name+"','"+student_id+"','"+student_fullname+"','"+student_sex+"','"+student_bplace+"','"+student_bday+"','"+student_religion+"','"+student_address+"')";
+                                    + "('"+years+"','"+class_name+"','"+student_id+"','"+student_fullname+"','"+student_sex+"','"+student_bplace+"','"+student_bday+"','"+student_religion+"','"+student_phone+"','"+student_address+"')";
                     System.out.println(sql);
                     stmt.executeUpdate(sql);
                     JOptionPane.showMessageDialog(rootPane,"Data berhasil disimpan!","Simpan",JOptionPane.INFORMATION_MESSAGE);
@@ -514,7 +535,7 @@ public class student_add_form extends javax.swing.JDialog {
     private void edit(String key) {
        try{
            Statement stmt           = dbconnect.createStatement();
-           sql                      = "SELECT years, class_name, student_id, student_fullname, student_sex, student_bplace, student_bday, student_religion, student_address"
+           sql                      = "SELECT years, class_name, student_id, student_fullname, student_sex, student_bplace, student_bday, student_religion, student_parent_phone, student_address"
                                     + " FROM m_student WHERE student_id = '"+key+"'";
            ResultSet rs   = stmt.executeQuery(sql);
            
@@ -527,7 +548,8 @@ public class student_add_form extends javax.swing.JDialog {
                param6.setSelectedItem(rs.getString("student_religion"));
                param7.setText(rs.getString("student_address"));
                String st_sex = ("L".equals(rs.getString("student_sex"))) ? "Laki-laki" : "Perempuan";
-               param8.setSelectedItem(st_sex);            
+               param8.setSelectedItem(st_sex);  
+               param9.setText(rs.getString("student_parent_phone"));          
               
                String[] split = rs.getString("student_bday").split("-");
                
@@ -555,6 +577,7 @@ public class student_add_form extends javax.swing.JDialog {
         String month            = (String) date_param2.getSelectedItem();
         String year             = (String) date_param3.getSelectedItem();
         String student_address  = param7.getText();
+        String student_phone    = param9.getText();
         
         
         // ------------------ validasi data dulu disini  -----------------
@@ -580,6 +603,7 @@ public class student_add_form extends javax.swing.JDialog {
                     sql = "UPDATE m_student SET "
                                     + "years = '"+years+"', class_name = '"+class_name+"', student_fullname = '"+student_fullname+"', "
                                     + "student_sex = '"+student_sex+"', student_bplace = '"+student_bplace+"', student_bday = '"+student_bday+"', student_religion = '"+student_religion+"',"
+                                    + " student_parent_phone = '"+student_phone+"',"
                                     + " student_address = '"+student_address+"' WHERE student_id = '"+student_id+"'";
                     System.out.println(sql);
                     stmt.executeUpdate(sql);
