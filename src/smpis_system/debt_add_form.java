@@ -504,8 +504,8 @@ public class debt_add_form extends javax.swing.JDialog {
                 List<String> data = (List<String>) data_list.get(i);
                         // [QYRCJZH1, Desember 2012, 15167041, NASYWAH SABINA BELVA, 900, Belum Lunas]
 
-                sql = "INSERT INTO m_debt (debt_code, debt_description, years, student_id, class_name, debt_amount, debt_status)"
-                    + "VALUES ('"+data.get(0)+"','"+data.get(1)+"','"+years+"','"+data.get(2)+"','"+data.get(4)+"','"+data.get(5)+"','"+data.get(6)+"') ";
+                sql = "INSERT INTO m_debt (debt_code, debt_description, years, student_id, class_name, debt_amount, debt_status, debt_addby, debt_addtime)"
+                    + "VALUES ('"+data.get(0)+"','"+data.get(1)+"','"+years+"','"+data.get(2)+"','"+data.get(4)+"','"+data.get(5)+"','"+data.get(6)+"', '"+mainform.user_id+"',NOW()) ";
                 stmt.executeUpdate(sql);
             }
             JOptionPane.showMessageDialog(rootPane,"Total "+i+" Data Tunggakan berhasil disimpan!","Berhasil",JOptionPane.INFORMATION_MESSAGE);

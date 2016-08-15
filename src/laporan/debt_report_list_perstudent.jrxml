@@ -20,7 +20,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT * FROM list_debt WHERE  student_id = $P{student_id}
-ORDER BY debt_addtime ASC]]>
+ORDER BY debt_order ASC]]>
 	</queryString>
 	<field name="debt_code" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

@@ -235,7 +235,7 @@ public class payment_list_student extends javax.swing.JPanel {
                  if(!str_where.equals("")){
                      sql  = "SELECT * FROM m_student "+str_where;
                  }else{
-                     sql  = "SELECT * FROM m_student WHERE student_status NOT IN ('Dihapus','Suspen') ";
+                     sql  = "SELECT * FROM m_student WHERE student_status NOT IN ('Deleted','Suspended') ";
                  }
                  
                 Statement st = dbconnect.createStatement();

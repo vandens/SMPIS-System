@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -291,7 +289,6 @@ public class sms_list_form extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(null,error_msg,"Error",JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (SQLException ex) {
-                        Logger.getLogger(student_list_form.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(null,ex,"Error",JOptionPane.ERROR_MESSAGE);
                     }
 

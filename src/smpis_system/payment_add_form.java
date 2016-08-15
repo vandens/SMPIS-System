@@ -8,7 +8,7 @@ package smpis_system;
 
 import java.awt.Window;
 import java.io.File;
-import java.lang.String;
+import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,10 +18,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.DatatypeConverter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -318,7 +321,6 @@ public class payment_add_form extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void save_printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_printActionPerformed
-        // TODO add your handling code here:
         save_payment(true);
     }//GEN-LAST:event_save_printActionPerformed
 
@@ -452,12 +454,12 @@ public class payment_add_form extends javax.swing.JDialog {
                     String debt_code                = table_list_debt_confirm.getValueAt(i,1).toString();
                     String payment_subject          = table_list_debt_confirm.getValueAt(i,2).toString();
                     String payment_amount           = table_list_debt_confirm.getValueAt(i,3).toString();
-                    
-
+                    String TextMsg                  = "SPP "+payment_subject+" LUNAS, ref#"+payment_code+"";
+                    String TextHex                  = stringToHex(TextMsg); //stringToHex(TextMsg);//new BigInteger(1, TextMsg.getBytes("UTF-8")).toString(16); //Integer.toHexString(Integer.parseInt(TextMsg));
 
                     // 1. INSERT table t_payment
-                    String sql  = "INSERT INTO t_payment (payment_ref, debt_code, payment_subject, student_id, class_name, payment_date, payment_amount, payment_status) "
-                                  + "VALUES ('"+payment_code+"','"+debt_code+"','"+payment_subject+"','"+student_id+"','"+class_name+"','"+payment_date+"','"+payment_amount+"','Completed')";
+                    String sql  = "INSERT INTO t_payment (payment_ref, debt_code, payment_subject, student_id, class_name, payment_date, payment_amount, payment_status, payment_addby) "
+                                  + "VALUES ('"+payment_code+"','"+debt_code+"','"+payment_subject+"','"+student_id+"','"+class_name+"','"+payment_date+"','"+payment_amount+"','Completed','"+mainform.user_id+"')";
                     stmt.executeUpdate(sql);
                     
                     
@@ -466,7 +468,7 @@ public class payment_add_form extends javax.swing.JDialog {
 
                     if(!"".equals(param4.getText()))
                     // 3. KIRIM SMS
-                    stmt.executeUpdate("INSERT INTO outbox (DestinationNumber, TextDecoded, SenderID, CreatorID) VALUES ('"+param4.getText()+"', 'SPP "+payment_subject+" dibayar LUNAS dgn ref#"+payment_code+"', '"+student_id+"' ,'smpis_system')");
+                    stmt.executeUpdate("INSERT INTO outbox (DestinationNumber, Text, TextDecoded,  CreatorID) VALUES ('"+param4.getText()+"', '"+TextHex+"' ,'"+TextMsg+"', 'smpis_system')");
 
                     System.out.println(payment_code+" "+debt_code+" "+payment_subject+" "+payment_amount+" "+student_id+" "+payment_date);
                     counter++;
@@ -488,7 +490,15 @@ public class payment_add_form extends javax.swing.JDialog {
         
     }
     
-  
+    static String stringToHex(String string) {
+        StringBuilder buf = new StringBuilder(200);
+        for (char ch: string.toCharArray()) {
+          //if (buf.length() > 0)
+          //buf.append(' ');
+          buf.append(String.format("%04x", (int) ch));
+        }
+        return buf.toString();
+      }
    
     private void print_payment(String student_id, String payref){
          String ref      = payref.substring(0, payref.length()-1);
@@ -496,7 +506,7 @@ public class payment_add_form extends javax.swing.JDialog {
           try
         {   
             
-            String Query     = "SELECT a.*, b.payment_ref, b.payment_subject, b.payment_amount, b.payment_date, b.payment_status a "
+            String Query     = "SELECT a.*, b.payment_ref, b.payment_subject, b.payment_amount, b.payment_date, b.payment_status, b.payment_addby, b.payment_addtime "
                                + " FROM t_payment b LEFT JOIN m_student a ON a.student_id = b.student_id WHERE b.student_id = '"+student_id+"' AND b.payment_ref IN ("+ref+")";
             System.out.println(Query);
             Map params=new HashMap();
@@ -519,10 +529,6 @@ public class payment_add_form extends javax.swing.JDialog {
         }
           
         // JOptionPane.showMessageDialog(rootPane,"Cetak transaksi "+student_id+"; payref = "+ref,"Berhasil",JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    private void send_SMS(){
-        
     }
     
     

@@ -516,15 +516,14 @@ public class student_add_form extends javax.swing.JDialog {
                     String student_sex  = ("Laki-laki".equals(st_sex)) ? "L" : "P";
                     Statement stmt = dbconnect.createStatement();
                     sql = "INSERT INTO m_student"
-                                    + "(years, class_name, student_id, student_fullname, student_sex, student_bplace, student_bday, student_religion, student_parent_phone, student_address)"
+                                    + "(years, class_name, student_id, student_fullname, student_sex, student_bplace, student_bday, student_religion, student_parent_phone, student_address, student_addby)"
                                     + " VALUE"
-                                    + "('"+years+"','"+class_name+"','"+student_id+"','"+student_fullname+"','"+student_sex+"','"+student_bplace+"','"+student_bday+"','"+student_religion+"','"+student_phone+"','"+student_address+"')";
+                                    + "('"+years+"','"+class_name+"','"+student_id+"','"+student_fullname+"','"+student_sex+"','"+student_bplace+"','"+student_bday+"','"+student_religion+"','"+student_phone+"','"+student_address+"', '"+mainform.user_id+"')";
                     System.out.println(sql);
                     stmt.executeUpdate(sql);
                     JOptionPane.showMessageDialog(rootPane,"Data berhasil disimpan!","Simpan",JOptionPane.INFORMATION_MESSAGE);
                         
             } catch (SQLException ex) {
-                    Logger.getLogger(student_list_form.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(rootPane,"Error : "+ex,"Error",JOptionPane.ERROR);
             }
             
@@ -604,13 +603,13 @@ public class student_add_form extends javax.swing.JDialog {
                                     + "years = '"+years+"', class_name = '"+class_name+"', student_fullname = '"+student_fullname+"', "
                                     + "student_sex = '"+student_sex+"', student_bplace = '"+student_bplace+"', student_bday = '"+student_bday+"', student_religion = '"+student_religion+"',"
                                     + " student_parent_phone = '"+student_phone+"',"
-                                    + " student_address = '"+student_address+"' WHERE student_id = '"+student_id+"'";
+                                    + " student_address = '"+student_address+"'"
+                                    + "student_updateby = '"+mainform.user_id+"', student_updatetime = NOW() WHERE student_id = '"+student_id+"'";
                     System.out.println(sql);
                     stmt.executeUpdate(sql);
                     JOptionPane.showMessageDialog(rootPane,"Data berhasil disimpan!","Berhasil",JOptionPane.INFORMATION_MESSAGE);
                         
             } catch (SQLException ex) {
-                    Logger.getLogger(student_list_form.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(rootPane,"Error : "+ex,"Error",JOptionPane.ERROR);
             }
             

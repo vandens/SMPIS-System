@@ -23,6 +23,20 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="student_listActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="admin_list">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+S"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/16/administrator.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Data Admin"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="admin_listActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="debt_list">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -122,7 +136,7 @@
             <Property name="text" type="java.lang.String" value="Bantuan"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
+            <MenuItem class="javax.swing.JMenuItem" name="contact">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+K"/>
@@ -132,6 +146,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Kontak"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contactActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -162,18 +179,21 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-          <Component id="jPanel3" max="32767" attributes="0"/>
-          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+          <Component id="jPanel1" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Component id="jPanel3" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="641" max="-2" attributes="0"/>
+          </Group>
+          <Component id="jPanel2" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jPanel2" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -181,20 +201,22 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="1133" max="32767" attributes="0"/>
+                  <EmptySpace pref="1145" max="32767" attributes="0"/>
                   <Component id="tampil_jam" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="toolbar" min="-2" pref="917" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="336" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="toolbar" alignment="0" pref="1253" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -214,6 +236,10 @@
       <SubComponents>
         <Container class="javax.swing.JToolBar" name="toolbar">
           <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="floatable" type="boolean" value="false"/>
             <Property name="rollover" type="boolean" value="true"/>
           </Properties>
 
@@ -232,6 +258,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_student_listActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btn_debt_list">
               <Properties>
@@ -294,7 +323,10 @@
         <Component class="javax.swing.JLabel" name="tampil_jam">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="25" style="0"/>
+              <Font name="Impact" size="25" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="00:00:00"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -303,44 +335,63 @@
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
           </AccessibilityProperties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="ActionListener jam = new ActionListener() {&#xa;&#xa;            @Override&#xa;            public void actionPerformed(ActionEvent e) {&#xa;                    Date dt = new Date();&#xa;                    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy MMM dd HH:mm:ss&quot;);&#xa;                    String datetime = sdf.format(dt);&#xa;&#xa;                    //menampilkan pada layar&#xa;                    tampil_jam.setText(datetime);&#xa;                 }&#xa;       };&#xa;&#xa;new Timer(1000, jam).start();"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="ActionListener jam = new ActionListener() {&#xa;&#xa;            @Override&#xa;            public void actionPerformed(ActionEvent e) {&#xa;                    Date dt = new Date();&#xa;                    SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd MMM yyyy HH:mm:ss&quot;);&#xa;                    String datetime = sdf.format(dt);&#xa;&#xa;                    //menampilkan pada layar&#xa;                    tampil_jam.setText(datetime);&#xa;                 }&#xa;       };&#xa;&#xa;new Timer(1000, jam).start();"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="18"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="cc" green="cc" red="cc" type="rgb"/>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="desktopPane" alignment="0" max="32767" attributes="0"/>
+              <Component id="split" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
-                  <Component id="desktopPane" max="32767" attributes="0"/>
-              </Group>
+              <Component id="split" alignment="1" pref="232" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JDesktopPane" name="desktopPane">
+        <Container class="javax.swing.JSplitPane" name="split">
+          <Properties>
+            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[250, 27]"/>
+            </Property>
+          </Properties>
 
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1253" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="550" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="left_panel">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="left"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="230" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+            </Container>
+          </SubComponents>
         </Container>
       </SubComponents>
     </Container>
@@ -349,7 +400,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jToolBar2" alignment="0" pref="1253" max="32767" attributes="0"/>
+              <Component id="jToolBar2" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -370,7 +421,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btn_user_id">
+            <Component class="javax.swing.JButton" name="btn_user">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/16/administrator.png"/>
@@ -381,6 +432,9 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="4"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

@@ -6,44 +6,37 @@
 
 package smpis_system;
 
-import java.awt.Font;
+import component.ClosableTabbedPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import javax.swing.*;
 
 /**
  *
  * @author vandens
  */
-public class mainform extends javax.swing.JFrame {
-    public static String user_id = "admin";
+public class mainform extends JFrame {
+    public static String user_id;
     public Connection dbconnect = dbconnection.getConnection();
+    private ClosableTabbedPane tabbedPane;
     /**
      * Creates new form mainform
      * @param user_id
      */
     public mainform(String user_id) {
         initComponents();
+        addTabbedPane();
+        this.user_id = user_id;
+        tabbedPane.addTab("HOME  ", new home());
         check_privilege(user_id);  
-        btn_user_id.setText(" : "+user_id);
+        btn_user.setText(" : "+user_id);
         Date date = new java.util.Date();
         System.out.println(user_id);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
 
@@ -64,13 +57,15 @@ public class mainform extends javax.swing.JFrame {
         btn_sms_list = new javax.swing.JButton();
         btn_logout = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        desktopPane = new javax.swing.JDesktopPane();
+        split = new javax.swing.JSplitPane();
+        left_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
-        btn_user_id = new javax.swing.JButton();
+        btn_user = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         student_list = new javax.swing.JMenuItem();
+        admin_list = new javax.swing.JMenuItem();
         debt_list = new javax.swing.JMenuItem();
         logout = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -80,11 +75,15 @@ public class mainform extends javax.swing.JFrame {
         debt_report_list = new javax.swing.JMenuItem();
         payment_report_list = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
+        contact = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistem Informasi Pembayaran SPP");
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        toolbar.setBorder(null);
+        toolbar.setFloatable(false);
         toolbar.setRollover(true);
 
         btn_student_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/32/user_student_female.png"))); // NOI18N
@@ -147,7 +146,8 @@ public class mainform extends javax.swing.JFrame {
         });
         toolbar.add(btn_logout);
 
-        tampil_jam.setFont(new java.awt.Font("Arial", 0, 25)); // NOI18N
+        tampil_jam.setFont(new java.awt.Font("Impact", 1, 25)); // NOI18N
+        tampil_jam.setForeground(new java.awt.Color(0, 0, 102));
         tampil_jam.setText("00:00:00");
         tampil_jam.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
@@ -156,13 +156,11 @@ public class mainform extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(1133, Short.MAX_VALUE)
+                .addContainerGap(1145, Short.MAX_VALUE)
                 .addComponent(tampil_jam)
-                .addGap(22, 22, 22))
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(toolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 917, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 336, Short.MAX_VALUE)))
+                .addComponent(toolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 1253, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,7 +177,7 @@ public class mainform extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Date dt = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
                 String datetime = sdf.format(dt);
 
                 //menampilkan pada layar
@@ -190,46 +188,51 @@ public class mainform extends javax.swing.JFrame {
         new Timer(1000, jam).start();
         tampil_jam.getAccessibleContext().setAccessibleName("");
 
-        javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
-        desktopPane.setLayout(desktopPaneLayout);
-        desktopPaneLayout.setHorizontalGroup(
-            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1253, Short.MAX_VALUE)
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+
+        split.setOpaque(false);
+        split.setPreferredSize(new java.awt.Dimension(250, 27));
+
+        javax.swing.GroupLayout left_panelLayout = new javax.swing.GroupLayout(left_panel);
+        left_panel.setLayout(left_panelLayout);
+        left_panelLayout.setHorizontalGroup(
+            left_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
-        desktopPaneLayout.setVerticalGroup(
-            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+        left_panelLayout.setVerticalGroup(
+            left_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 230, Short.MAX_VALUE)
         );
+
+        split.setLeftComponent(left_panel);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane)
+            .addComponent(split, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(desktopPane))
+            .addComponent(split, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
         );
 
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
-        btn_user_id.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/administrator.png"))); // NOI18N
-        btn_user_id.setText("user_id");
-        btn_user_id.setBorderPainted(false);
-        btn_user_id.setFocusPainted(false);
-        btn_user_id.setFocusable(false);
-        btn_user_id.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jToolBar2.add(btn_user_id);
+        btn_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/administrator.png"))); // NOI18N
+        btn_user.setText("user_id");
+        btn_user.setBorderPainted(false);
+        btn_user.setFocusPainted(false);
+        btn_user.setFocusable(false);
+        btn_user.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jToolBar2.add(btn_user);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 1253, Short.MAX_VALUE)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,6 +252,16 @@ public class mainform extends javax.swing.JFrame {
             }
         });
         jMenu1.add(student_list);
+
+        admin_list.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK));
+        admin_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/administrator.png"))); // NOI18N
+        admin_list.setText("Data Admin");
+        admin_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                admin_listActionPerformed(evt);
+            }
+        });
+        jMenu1.add(admin_list);
 
         debt_list.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.SHIFT_MASK));
         debt_list.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/account_balances.png"))); // NOI18N
@@ -320,10 +333,15 @@ public class mainform extends javax.swing.JFrame {
 
         jMenu4.setText("Bantuan");
 
-        jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.SHIFT_MASK));
-        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/telephone.png"))); // NOI18N
-        jMenuItem9.setText("Kontak");
-        jMenu4.add(jMenuItem9);
+        contact.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.SHIFT_MASK));
+        contact.setIcon(new javax.swing.ImageIcon(getClass().getResource("/16/telephone.png"))); // NOI18N
+        contact.setText("Kontak");
+        contact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contactActionPerformed(evt);
+            }
+        });
+        jMenu4.add(contact);
 
         jMenuBar1.add(jMenu4);
 
@@ -334,96 +352,55 @@ public class mainform extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(641, 641, 641))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
-        // TODO add your handling code here:
-        logout();      
-    }//GEN-LAST:event_btn_logoutActionPerformed
-
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
         // TODO add your handling code here:
         logout();
     }//GEN-LAST:event_logoutActionPerformed
 
-    private void btn_student_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_student_listActionPerformed
-        // TODO add your handling code here:
-        student_list_form form   =   new student_list_form(); 
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        form.toFront();
-        desktopPane.add(form);
-    }//GEN-LAST:event_btn_student_listActionPerformed
-
-    private void btn_debt_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_debt_listActionPerformed
-        // TODO add your handling code here:
-        debt_list_form form   =   new debt_list_form(); 
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
-    }//GEN-LAST:event_btn_debt_listActionPerformed
-
     private void student_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_student_listActionPerformed
-        // TODO add your handling code here:
-        student_list_form form   =   new student_list_form(); 
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
+        // TODO add your handling code here:        
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Siswa  ", new student_list());
+        tabbedPane.setSelectedIndex(index+1);		
     }//GEN-LAST:event_student_listActionPerformed
 
     private void debt_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debt_listActionPerformed
-        // TODO add your handling code here:
-        debt_list_form form   =   new debt_list_form(); 
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
+        // TODO add your handling code here:       
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Tunggakan ",new debt_list());
+        tabbedPane.setSelectedIndex(index+1);
     }//GEN-LAST:event_debt_listActionPerformed
-
-    private void btn_payment_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_payment_listActionPerformed
-        // TODO add your handling code here:
-        payment_list_form form = new payment_list_form();
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
-    }//GEN-LAST:event_btn_payment_listActionPerformed
 
     private void payment_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payment_listActionPerformed
         // TODO add your handling code here:
-        payment_list_form form = new payment_list_form();
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Transaksi ",new payment_list());
+        tabbedPane.setSelectedIndex(index+1);
     }//GEN-LAST:event_payment_listActionPerformed
-
-    private void btn_sms_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sms_listActionPerformed
-        // TODO add your handling code here:
-        sms_list_form form = new sms_list_form();
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
-        
-    }//GEN-LAST:event_btn_sms_listActionPerformed
 
     private void sms_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sms_listActionPerformed
         // TODO add your handling code here:
-        sms_list_form form = new sms_list_form();
-        form.setVisible(true);
-        form.setFocusCycleRoot(true);
-        desktopPane.add(form);
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("SMS Info ",new sms_list());
+        tabbedPane.setSelectedIndex(index+1);
     }//GEN-LAST:event_sms_listActionPerformed
 
     private void payment_report_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payment_report_listActionPerformed
@@ -440,71 +417,109 @@ public class mainform extends javax.swing.JFrame {
         form.setVisible(true);
     }//GEN-LAST:event_debt_report_listActionPerformed
 
+    private void contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactActionPerformed
+        // TODO add your handling code here:        
+        contact form = new contact();
+        form.setLocationRelativeTo(null);
+        form.setVisible(true);
+    }//GEN-LAST:event_contactActionPerformed
+
+    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
+        // TODO add your handling code here:
+        logout();
+    }//GEN-LAST:event_btn_logoutActionPerformed
+
+    private void btn_sms_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sms_listActionPerformed
+        // TODO add your handling code here:
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("SMS Info ",new sms_list());
+        tabbedPane.setSelectedIndex(index+1);
+
+    }//GEN-LAST:event_btn_sms_listActionPerformed
+
+    private void btn_payment_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_payment_listActionPerformed
+        // TODO add your handling code here:
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Transaksi ",new payment_list());
+        tabbedPane.setSelectedIndex(index+1);
+    }//GEN-LAST:event_btn_payment_listActionPerformed
+
+    private void btn_debt_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_debt_listActionPerformed
+        // TODO add your handling code here:
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Tunggakan ",new debt_list());
+        tabbedPane.setSelectedIndex(index+1);
+    }//GEN-LAST:event_btn_debt_listActionPerformed
+
+    private void btn_student_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_student_listActionPerformed
+        // TODO add your handling code here:
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Siswa  ", new student_list());
+        tabbedPane.setSelectedIndex(index+1);
+    }//GEN-LAST:event_btn_student_listActionPerformed
+
+    private void admin_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_admin_listActionPerformed
+        // TODO add your handling code here:
+        int index = tabbedPane.getSelectedIndex();
+        tabbedPane.addTab("Admin  ", new admin_list());
+        tabbedPane.setSelectedIndex(index+1);
+    }//GEN-LAST:event_admin_listActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
+       try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mainform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mainform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mainform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mainform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        /* Create and display the form */
-        
-        
+       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                mainform mdiparent = new mainform(user_id);       
-                mdiparent.pack();
-                mdiparent.setLocationRelativeTo(null);
-                mdiparent.setExtendedState(mainform.MAXIMIZED_BOTH); //tampilkan full screen
-                mdiparent.setVisible(true);
+                new mainform(user_id);
             }
         });
         
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem admin_list;
     private javax.swing.JButton btn_debt_list;
     private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_payment_list;
     private javax.swing.JButton btn_sms_list;
-    private javax.swing.JButton btn_student_list;
-    private javax.swing.JButton btn_user_id;
+    public javax.swing.JButton btn_student_list;
+    public javax.swing.JButton btn_user;
+    private javax.swing.JMenuItem contact;
     private javax.swing.JMenuItem debt_list;
     private javax.swing.JMenuItem debt_report_list;
-    private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JPanel left_panel;
     private javax.swing.JMenuItem logout;
     private javax.swing.JMenuItem payment_list;
     private javax.swing.JMenuItem payment_report_list;
     private javax.swing.JMenuItem sms_list;
+    private javax.swing.JSplitPane split;
     private javax.swing.JMenuItem student_list;
     private final javax.swing.JLabel tampil_jam = new javax.swing.JLabel();
     private javax.swing.JToolBar toolbar;
@@ -515,11 +530,11 @@ public class mainform extends javax.swing.JFrame {
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(this, "Anda yakin ingin keluar?", "Konfirmasi", dialogButton);
             if(dialogResult == 0) {
-                 login_form form = new login_form();
-                 form.setLocationRelativeTo(form);
+                 login form = new login();
+                 form.setLocationRelativeTo(null);
                  form.setVisible(true);
                  this.dispose();
-                 
+                 System.out.println("YEsss");
             } else {
               System.out.println("No Option");
             }             
@@ -529,8 +544,30 @@ public class mainform extends javax.swing.JFrame {
     }
 
     private void check_privilege(String user_id) {
-        btn_user_id.setText(" :  "+user_id);
+        btn_user.setText(" :  "+user_id);
     }
+    
+    
+   private void addTabbedPane() {
+		// Create ClosableTabbedPane and override the tabAboutToClose
+		// to be notified when certain tab is going to close.
+		tabbedPane = new ClosableTabbedPane() {
+                        
+			public boolean tabAboutToClose(int tabIndex) {
+                            /*
+				String tab = tabbedPane.getTabTitleAt(tabIndex);
+				int choice = JOptionPane.showConfirmDialog(null,
+						"Anda akan menutup '" + tab
+								+ "'\napakah ingin melanjutkan ?",
+						"Confirmation Dialog", JOptionPane.INFORMATION_MESSAGE);
+				return choice == 0; // if returned false tab closing will be
+									// canceled
+                            */
+                                return true;
+			}
+		};
+                split.setRightComponent(tabbedPane);
+	}
 
 
 }

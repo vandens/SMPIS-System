@@ -14,7 +14,7 @@
 		</conditionalStyle>
 	</style>
 	<parameter name="QueryString" class="java.lang.String"/>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[$P!{QueryString}]]>
 	</queryString>
 	<field name="years" class="java.lang.String">
@@ -57,7 +57,7 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="student_status" class="java.lang.String">
-		<fieldDescription><![CDATA[Suspen, Aktif, Dihapus, Lulus]]></fieldDescription>
+		<fieldDescription><![CDATA[Suspended, Aktif, Deleted, Lulus]]></fieldDescription>
 	</field>
 	<field name="student_addby" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -83,6 +83,15 @@
 	<field name="payment_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="payment_status" class="java.lang.String">
+		<fieldDescription><![CDATA[Completed, Deleted]]></fieldDescription>
+	</field>
+	<field name="payment_addby" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="payment_addtime" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="total" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{payment_amount}]]></variableExpression>
 	</variable>
@@ -105,13 +114,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{student_fullname}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement style="Column header" x="453" y="84" width="99" height="18" forecolor="#000000" uuid="ac471eaa-bb44-4377-8786-c42b707c1185"/>
-				<textElement>
-					<font fontName="Arial" size="10" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Admin]]></text>
-			</staticText>
 			<textField isStretchWithOverflow="true">
 				<reportElement style="Detail" positionType="Float" x="453" y="102" width="99" height="18" uuid="03faba55-0ae6-4234-ab04-e7c81e0c6c17"/>
 				<textElement>
@@ -198,10 +200,10 @@
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="73" width="555" height="1" uuid="5f81961d-a2b0-4929-854b-bb3ef63fceab"/>
 			</line>
-			<image>
-				<reportElement x="12" y="17" width="63" height="46" uuid="1493c0a8-e7db-4564-923d-8d08be461186"/>
-				<imageExpression><![CDATA[new File("").getAbsolutePath()+"/src/laporan/logo-in.png"]]></imageExpression>
-			</image>
+			<textField>
+				<reportElement x="453" y="84" width="100" height="18" uuid="420b492d-cf5f-446b-8b44-7bdb8797b750"/>
+				<textFieldExpression><![CDATA[$F{payment_addby}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -295,19 +297,19 @@
 				<text><![CDATA[____________________]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="317" y="71" width="103" height="18" forecolor="#000000" uuid="94894602-efd3-43f4-a5c9-fad9056e93e8"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10" isBold="false" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[          Admin          ]]></text>
-			</staticText>
-			<staticText>
 				<reportElement style="Column header" x="324" y="39" width="90" height="18" forecolor="#000000" uuid="960f1b04-c736-4216-a72b-7305e8922cf7"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Penerima,]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="299" y="71" width="136" height="18" uuid="bed4aaf0-4956-4826-b015-04689f4d9efc"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[     $F{payment_addby}     ]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 	<noData>

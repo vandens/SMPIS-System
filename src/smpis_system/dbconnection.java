@@ -7,7 +7,6 @@
 package smpis_system;
 
 import java.sql.*;
-import java.util.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,8 +18,8 @@ import javax.swing.JOptionPane;
 public class dbconnection {
     private static String url = "jdbc:mysql://localhost:3306/db_sekolah";    
     private static String driverName = "com.mysql.jdbc.Driver";   
-    private static String username = "smpis_system";   
-    private static String password = "smpis_system";
+    private static String username = "root";   
+    private static String password = "vandens";
     private static Connection con;
 
     public static Connection getConnection() {
@@ -31,10 +30,12 @@ public class dbconnection {
             } catch (SQLException ex) {
                 // log an exception. fro example:
                 JOptionPane.showMessageDialog(null,ex,"Error",JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
             }
         } catch (ClassNotFoundException ex) {
             // log an exception. for example:
             JOptionPane.showMessageDialog(null,ex,"Error",JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         }
         return con;
     }

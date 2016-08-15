@@ -367,6 +367,9 @@ public class debt_report_form extends javax.swing.JDialog {
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
+        param3.setText("");
+        param4.setText("");
+        param5.setText("");
     }//GEN-LAST:event_clearActionPerformed
 
     private void filter2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filter2ActionPerformed
@@ -403,6 +406,8 @@ public class debt_report_form extends javax.swing.JDialog {
 
     private void clear2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear2ActionPerformed
         // TODO add your handling code here:
+        param1.setSelectedItem("");
+        param2.setSelectedItem("");
     }//GEN-LAST:event_clear2ActionPerformed
 
     private void param3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_param3KeyTyped
